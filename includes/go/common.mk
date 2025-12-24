@@ -19,7 +19,7 @@ COPYRIGHT_YEAR          ?= 2023
 COPYRIGHT_FILES         ?= $$(find . -name "*.go" -print | grep -v "/vendor/")
 GO                      ?= go
 DEFAULT_GOALS           ?= fmt set-license go-licenses-check goimports lint vulncheck test
-GOLANG_CI_LINT_VERSION  ?= v2.1.6
+GOLANG_CI_LINT_VERSION  ?= v2.7.2
 TEXTLINT_ACTION_VERSION ?= v0.1.0
 
 .DEFAULT_GOAL = default
@@ -40,7 +40,7 @@ dev-tools:
 	$(GO) install golang.org/x/tools/cmd/stringer@latest
 	$(GO) install github.com/sacloud/addlicense@latest
 	$(GO) install github.com/client9/misspell/cmd/misspell@latest
-	$(GO) install github.com/google/go-licenses@v1.0.0
+	$(GO) install github.com/google/go-licenses/v2@v2.0.1
 	$(GO) install github.com/rhysd/actionlint/cmd/actionlint@latest
 	$(GO) install golang.org/x/vuln/cmd/govulncheck@latest
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $$(go env GOPATH)/bin $(GOLANG_CI_LINT_VERSION)
@@ -85,7 +85,7 @@ set-license:
 .PHONY: go-licenses-check
 go-licenses-check:
 	@echo "running go-licenses..."
-	@go-licenses check .
+	@go-licenses check . --ignore github.com/segmentio/asm/,golang.org/x/sys/
 
 .PHONY: vulncheck
 vulncheck:

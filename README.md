@@ -1,39 +1,28 @@
-# sacloud/go-template
+# sacloud/simple-notification-api-go
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/sacloud/go-template.svg)](https://pkg.go.dev/github.com/sacloud/go-template)
-[![Tests](https://github.com/sacloud/go-template/workflows/Tests/badge.svg)](https://github.com/sacloud/go-template/actions/workflows/tests.yaml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/sacloud/go-template)](https://goreportcard.com/report/github.com/sacloud/go-template)
+[![Go Reference](https://pkg.go.dev/badge/github.com/sacloud/simple-notification-api-go.svg)](https://pkg.go.dev/github.com/sacloud/simple-notification-api-go)
+[![Tests](https://github.com/sacloud/simple-notification-api-go/workflows/Tests/badge.svg)](https://github.com/sacloud/simple-notification-api-go/actions/workflows/tests.yaml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/sacloud/simple-notification-api-go)](https://goreportcard.com/report/github.com/sacloud/simple-notification-api-go)
 
 さくらのクラウド向けOSSプロダクトでのプロジェクトテンプレート(Go)
 
 ## 概要
 
-さくらのクラウド向けOSSプロダクトでGo言語を中心に用いるプロジェクトのためのテンプレート
+`sacloud/simple-notification-api-go`は、さくらのクラウドのシンプル通知APIをGo言語から利用するためのライブラリです。
 
-## 使い方
+利用例: [example_test.go](./example_test.go)
 
-GitHubでリポジトリを作成する際にテンプレートとしてsacloud/go-templateを選択して作成します。  
-![テンプレートの選択](docs/new_repo.png)
+:warning:  v1.0に達するまでは互換性のない形で変更される可能性がありますのでご注意ください。
 
-次に`go-teplate`という文字列を自身のプロジェクトのものに置き換えてください。
+## ogenによるコード生成
 
-例: exampleという名前のプロジェクトを作成する場合
+以下のコマンドを実行
 
-```bash
-# 作成したプロジェクトのディレクトリに移動
-cd example
-# 置き換え
-find . -type f | xargs sed -i '' -e "s/go-template/example/g"
 ```
-
-### DockerイメージをGitHub Container Registryで公開する際の注意点
-
-デフォルトでは`CR_PAT`が渡されないためGitHub Actionsでのイメージのビルド/プッシュに失敗します。
-また、パッケージを公開したい場合は初回のみ手作業が必要です。
-
-このためDockerイメージをGitHub Container Registryで公開したい場合はオーガニゼーション管理者にご相談ください。
+$ make gen
+```
 
 ## License
 
-`go-template` Copyright (C) 2022-2025 The sacloud/go-template authors.
+`simple-notification-api-go` Copyright (C) 2022-2025 The sacloud/simple-notification-api-go authors.
 This project is published under [Apache 2.0 License](LICENSE).
