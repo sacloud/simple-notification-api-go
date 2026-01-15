@@ -15,8 +15,8 @@ sacloud/simple-notification-api-goはさくらのクラウド シンプル通知
 以下のコマンドを実行
 
 ```
-$ go get -tool github.com/ogen-go/ogen/cmd/ogen@latest
-$ go tool ogen -package v1 -target apis/v1 -clean -config ogen-config.yaml ./openapi/openapi.yaml
+$ go install github.com/ogen-go/ogen/cmd/ogen@latest
+$ ogen -package v1 -target apis/v1 -clean -config ogen-config.yaml ./openapi/openapi.yaml
 ```
 
 
