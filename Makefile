@@ -1,5 +1,5 @@
 #====================
-AUTHOR         ?= The sacloud/simiple-notification-api-go Authors
+AUTHOR         ?= The sacloud/simple-notification-api-go Authors
 COPYRIGHT_YEAR ?= 2022-2025
 
 BIN            ?= simple-notification-api-go 
