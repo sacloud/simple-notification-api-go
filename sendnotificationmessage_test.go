@@ -24,7 +24,6 @@ import (
 	simplenotification "github.com/sacloud/simple-notification-api-go"
 
 	v1 "github.com/sacloud/simple-notification-api-go/apis/v1"
-	"github.com/stretchr/testify/require"
 )
 
 func apiSetup(t *testing.T) (ctx context.Context, api simplenotification.SendNotificationMessageAPI) {
