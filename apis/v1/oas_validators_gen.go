@@ -977,15 +977,15 @@ func (s *SendNotificationMessageRequest) Validate() error {
 		if err := (validate.String{
 			MinLength:     0,
 			MinLengthSet:  false,
-			MaxLength:     0,
-			MaxLengthSet:  false,
+			MaxLength:     2048,
+			MaxLengthSet:  true,
 			Email:         false,
 			Hostname:      false,
 			Regex:         nil,
 			MinNumeric:    0,
 			MinNumericSet: false,
-			MaxNumeric:    2048,
-			MaxNumericSet: true,
+			MaxNumeric:    0,
+			MaxNumericSet: false,
 		}).Validate(string(s.Message)); err != nil {
 			return errors.Wrap(err, "string")
 		}
