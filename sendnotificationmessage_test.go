@@ -38,7 +38,6 @@ func apiSetup(t *testing.T) (ctx context.Context, api simplenotification.SendNot
 	if err != nil {
 		t.Fatalf("failed to create client: %v", err)
 	}
-	require.NoError(t, err)
 	simpleNotificationAPI := simplenotification.NewSendNotificationMessageOp(client)
 
 	return ctx, simpleNotificationAPI
