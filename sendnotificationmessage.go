@@ -16,6 +16,7 @@ package simplenotification
 
 import (
 	"context"
+	"errors"
 
 	v1 "github.com/sacloud/simple-notification-api-go/apis/v1"
 )
@@ -35,9 +36,14 @@ func NewSendNotificationMessageOp(client *v1.Client) SendNotificationMessageAPI 
 }
 
 func (o *sendNotificationMessageOp) Create(ctx context.Context, id string, request v1.SendNotificationMessageRequest) (*v1.SendNotificationMessageResponse, error) {
-	response, err := o.client.SendNotificationMessage(ctx, v1.OptSendNotificationMessageRequest{Value: request, Set: true}, v1.SendNotificationMessageParams{ID: id})
+	const methodName = "SendNotificationMessageAPI.Create"
+	res, err := o.client.SendNotificationMessage(ctx, v1.OptSendNotificationMessageRequest{Value: request, Set: true}, v1.SendNotificationMessageParams{ID: id})
 	if err != nil {
-		return nil, err
+		var e *v1.ErrorStatusCode
+		if errors.As(err, &e) {
+			return nil, NewAPIError(methodName, e.StatusCode, err)
+		}
+		return nil, NewError(methodName, err)
 	}
-	return response, nil
+	return res, nil
 }
