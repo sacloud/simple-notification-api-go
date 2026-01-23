@@ -42,7 +42,7 @@ func SendNotificationMessageAPISetup(t *testing.T) (ctx context.Context, api sim
 	return ctx, API
 }
 
-func TestSendNotificationMessageOp_Create(t *testing.T) {
+func TestSendNotificationMessageOp_Send(t *testing.T) {
 
 	// テスト用の通知グループを作成
 	ctx, sendNotificationMessageAPI := SendNotificationMessageAPISetup(t)
