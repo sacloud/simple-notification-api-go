@@ -29,7 +29,7 @@ func (e *Error) Unwrap() error { return e.err }
 func (e *Error) Error() string {
 	var buf strings.Builder
 
-	buf.WriteString("simple-notification")
+	buf.WriteString("simplenotification")
 
 	if e.msg != "" {
 		buf.WriteString(": ")

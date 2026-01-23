@@ -33,17 +33,17 @@ func TestError_Error(t *testing.T) {
 		{
 			name: "with msg and err",
 			err:  &Error{msg: "something failed", err: baseErr},
-			want: "workflows: something failed: base error",
+			want: "simplenotification: something failed: base error",
 		},
 		{
 			name: "with msg only",
 			err:  &Error{msg: "only msg"},
-			want: "workflows: only msg",
+			want: "simplenotification: only msg",
 		},
 		{
 			name: "with err only",
 			err:  &Error{err: baseErr},
-			want: "workflows: base error",
+			want: "simplenotification: base error",
 		},
 	}
 
