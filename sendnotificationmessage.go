@@ -22,7 +22,7 @@ import (
 )
 
 type SendNotificationMessageAPI interface {
-	Create(ctx context.Context, id string, request v1.SendNotificationMessageRequest) (*v1.SendNotificationMessageResponse, error)
+	Send(ctx context.Context, id string, request v1.SendNotificationMessageRequest) (*v1.SendNotificationMessageResponse, error)
 }
 
 var _ SendNotificationMessageAPI = (*sendNotificationMessageOp)(nil)
@@ -35,8 +35,8 @@ func NewSendNotificationMessageOp(client *v1.Client) SendNotificationMessageAPI 
 	return &sendNotificationMessageOp{client: client}
 }
 
-func (o *sendNotificationMessageOp) Create(ctx context.Context, id string, request v1.SendNotificationMessageRequest) (*v1.SendNotificationMessageResponse, error) {
-	const methodName = "SendNotificationMessageAPI.Create"
+func (o *sendNotificationMessageOp) Send(ctx context.Context, id string, request v1.SendNotificationMessageRequest) (*v1.SendNotificationMessageResponse, error) {
+	const methodName = "SendNotificationMessageAPI.Send"
 	res, err := o.client.SendNotificationMessage(ctx, v1.OptSendNotificationMessageRequest{Value: request, Set: true}, v1.SendNotificationMessageParams{ID: id})
 	if err != nil {
 		var e *v1.ErrorStatusCode

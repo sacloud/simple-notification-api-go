@@ -51,12 +51,12 @@ func TestSendNotificationMessageOp_Create(t *testing.T) {
 	request := v1.SendNotificationMessageRequest{Message: "sacloud simple-notification-api sdk test message"}
 	wantResp := &v1.SendNotificationMessageResponse{IsOk: true}
 
-	resp, err := sendNotificationMessageAPI.Create(ctx, id, request)
+	resp, err := sendNotificationMessageAPI.Send(ctx, id, request)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	if !reflect.DeepEqual(resp, wantResp) {
 		t.Errorf("response mismatch: got %+v, want %+v", resp, wantResp)
 	}
-	t.Logf("SendNotificationMessageOp.Create response: %+v", resp)
+	t.Logf("SendNotificationMessageOp.Send response: %+v", resp)
 }
