@@ -26,7 +26,7 @@ import (
 	v1 "github.com/sacloud/simple-notification-api-go/apis/v1"
 )
 
-func apiSetup(t *testing.T) (ctx context.Context, api simplenotification.SendNotificationMessageAPI) {
+func SendNotificationMessageAPISetup(t *testing.T) (ctx context.Context, api simplenotification.SendNotificationMessageAPI) {
 	testutil.PreCheckEnvsFunc("SAKURACLOUD_ACCESS_TOKEN", "SAKURACLOUD_ACCESS_TOKEN_SECRET")(t)
 
 	ctx = t.Context()
@@ -37,21 +37,21 @@ func apiSetup(t *testing.T) (ctx context.Context, api simplenotification.SendNot
 	if err != nil {
 		t.Fatalf("failed to create client: %v", err)
 	}
-	simpleNotificationAPI := simplenotification.NewSendNotificationMessageOp(client)
+	API := simplenotification.NewSendNotificationMessageOp(client)
 
-	return ctx, simpleNotificationAPI
+	return ctx, API
 }
 
 func TestSendNotificationMessageOp_Create(t *testing.T) {
 
 	// テスト用の通知グループを作成
-	ctx, simpleNotificationAPI := apiSetup(t)
+	ctx, sendNotificationMessageAPI := SendNotificationMessageAPISetup(t)
 
 	id := "your-notification-group-id" // 事前に作成した通知グループのIDを指定してください
 	request := v1.SendNotificationMessageRequest{Message: "sacloud simple-notification-api sdk test message"}
 	wantResp := &v1.SendNotificationMessageResponse{IsOk: true}
 
-	resp, err := simpleNotificationAPI.Create(ctx, id, request)
+	resp, err := sendNotificationMessageAPI.Create(ctx, id, request)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
