@@ -59,11 +59,12 @@ func responseModifier(req *http.Request, resp *http.Response) error {
 		fmt.Println("responseModifier: skip not commonserviceitem path:", req.URL.String())
 		return nil
 	}
-	bodyBytes, err := io.ReadAll(resp.Body)
+	body := resp.Body
+	defer body.Close()
+	bodyBytes, err := io.ReadAll(body)
 	if err != nil {
 		return err
 	}
-	resp.Body.Close()
 	// JSON decode
 	var data map[string]interface{}
 	if err := json.Unmarshal(bodyBytes, &data); err != nil {
