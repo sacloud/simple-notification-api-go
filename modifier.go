@@ -63,9 +63,6 @@ func responseModifier(req *http.Request, resp *http.Response) error {
 	if err != nil {
 		return err
 	}
-	if err = resp.Body.Close(); err != nil {
-		return err
-	}
 	// JSON decode
 	var data map[string]interface{}
 	if err := json.Unmarshal(bodyBytes, &data); err != nil {
@@ -81,7 +78,6 @@ func responseModifier(req *http.Request, resp *http.Response) error {
 		return err
 	}
 	// replace body
-	fmt.Println("new body set", string(newBody))
 	resp.Body = io.NopCloser(bytes.NewReader(newBody))
 	resp.ContentLength = int64(len(newBody))
 	resp.Header.Set("Content-Length", strconv.Itoa(len(newBody)))
