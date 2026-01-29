@@ -16,7 +16,7 @@ func (s *ErrorStatusCode) Error() string {
 // Ref: #/components/schemas/CommonServiceItem
 type CommonServiceItem struct {
 	Index       OptInt                    `json:"Index"`
-	ID          string                    `json:"ID"`
+	ID          int                       `json:"ID"`
 	Name        string                    `json:"Name"`
 	Description string                    `json:"Description"`
 	Settings    CommonServiceItemSettings `json:"Settings"`
@@ -33,7 +33,7 @@ func (s *CommonServiceItem) GetIndex() OptInt {
 }
 
 // GetID returns the value of ID.
-func (s *CommonServiceItem) GetID() string {
+func (s *CommonServiceItem) GetID() int {
 	return s.ID
 }
 
@@ -83,7 +83,7 @@ func (s *CommonServiceItem) SetIndex(val OptInt) {
 }
 
 // SetID sets the value of ID.
-func (s *CommonServiceItem) SetID(val string) {
+func (s *CommonServiceItem) SetID(val int) {
 	s.ID = val
 }
 
@@ -707,6 +707,46 @@ func (s *ListSimpleNotificationHistoriesResponse) GetNotificationHistories() []N
 // SetNotificationHistories sets the value of NotificationHistories.
 func (s *ListSimpleNotificationHistoriesResponse) SetNotificationHistories(val []NotificationHistory) {
 	s.NotificationHistories = val
+}
+
+// Ref: #/components/schemas/ListSourcesResponse
+type ListSourcesResponse struct {
+	Sources []ListSourcesResponseSourcesItem `json:"Sources"`
+}
+
+// GetSources returns the value of Sources.
+func (s *ListSourcesResponse) GetSources() []ListSourcesResponseSourcesItem {
+	return s.Sources
+}
+
+// SetSources sets the value of Sources.
+func (s *ListSourcesResponse) SetSources(val []ListSourcesResponseSourcesItem) {
+	s.Sources = val
+}
+
+type ListSourcesResponseSourcesItem struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+// GetID returns the value of ID.
+func (s *ListSourcesResponseSourcesItem) GetID() string {
+	return s.ID
+}
+
+// GetName returns the value of Name.
+func (s *ListSourcesResponseSourcesItem) GetName() string {
+	return s.Name
+}
+
+// SetID sets the value of ID.
+func (s *ListSourcesResponseSourcesItem) SetID(val string) {
+	s.ID = val
+}
+
+// SetName sets the value of Name.
+func (s *ListSourcesResponseSourcesItem) SetName(val string) {
+	s.Name = val
 }
 
 // Ref: #/components/schemas/NotificationHistory
@@ -1610,7 +1650,7 @@ type PutCommonServiceItemRequestCommonServiceItem struct {
 	Name        string                                                  `json:"Name"`
 	Description string                                                  `json:"Description"`
 	Tags        []string                                                `json:"Tags"`
-	Icon        PutCommonServiceItemRequestCommonServiceItemIcon        `json:"Icon"`
+	Icon        *PutCommonServiceItemRequestCommonServiceItemIcon       `json:"Icon"`
 	Settings    OptPutCommonServiceItemRequestCommonServiceItemSettings `json:"Settings"`
 }
 
@@ -1630,7 +1670,7 @@ func (s *PutCommonServiceItemRequestCommonServiceItem) GetTags() []string {
 }
 
 // GetIcon returns the value of Icon.
-func (s *PutCommonServiceItemRequestCommonServiceItem) GetIcon() PutCommonServiceItemRequestCommonServiceItemIcon {
+func (s *PutCommonServiceItemRequestCommonServiceItem) GetIcon() *PutCommonServiceItemRequestCommonServiceItemIcon {
 	return s.Icon
 }
 
@@ -1655,7 +1695,7 @@ func (s *PutCommonServiceItemRequestCommonServiceItem) SetTags(val []string) {
 }
 
 // SetIcon sets the value of Icon.
-func (s *PutCommonServiceItemRequestCommonServiceItem) SetIcon(val PutCommonServiceItemRequestCommonServiceItemIcon) {
+func (s *PutCommonServiceItemRequestCommonServiceItem) SetIcon(val *PutCommonServiceItemRequestCommonServiceItemIcon) {
 	s.Icon = val
 }
 

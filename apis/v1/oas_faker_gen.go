@@ -15,7 +15,7 @@ func (s *CommonServiceItem) SetFake() {
 	}
 	{
 		{
-			s.ID = "string"
+			s.ID = int(0)
 		}
 	}
 	{
@@ -316,6 +316,36 @@ func (s *ListSimpleNotificationHistoriesResponse) SetFake() {
 				}
 				s.NotificationHistories = append(s.NotificationHistories, elem)
 			}
+		}
+	}
+}
+
+// SetFake set fake values.
+func (s *ListSourcesResponse) SetFake() {
+	{
+		{
+			s.Sources = nil
+			for i := 0; i < 0; i++ {
+				var elem ListSourcesResponseSourcesItem
+				{
+					elem.SetFake()
+				}
+				s.Sources = append(s.Sources, elem)
+			}
+		}
+	}
+}
+
+// SetFake set fake values.
+func (s *ListSourcesResponseSourcesItem) SetFake() {
+	{
+		{
+			s.ID = "string"
+		}
+	}
+	{
+		{
+			s.Name = "string"
 		}
 	}
 }
@@ -633,8 +663,8 @@ func (s *PutCommonServiceItemRequestCommonServiceItem) SetFake() {
 		}
 	}
 	{
-		{
-			s.Icon.SetFake()
+		{ // Keep pointer nil to prevent infinite recursion.
+			s.Icon = nil
 		}
 	}
 	{

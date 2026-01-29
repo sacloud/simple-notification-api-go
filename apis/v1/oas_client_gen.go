@@ -69,6 +69,12 @@ type Invoker interface {
 	//
 	// GET /commonserviceitem/simplenotification/history
 	ListNotificationHistories(ctx context.Context) (*ListSimpleNotificationHistoriesResponse, error)
+	// ListSources invokes listSources operation.
+	//
+	// 通知ルーティングに設定する通知元の情報を取得します。.
+	//
+	// GET /commonserviceitem/simplenotification/sources
+	ListSources(ctx context.Context) (*ListSourcesResponse, error)
 	// ReorderRouting invokes reorderRouting operation.
 	//
 	// 通知ルーティングの優先順位を並び替えます。
@@ -474,6 +480,42 @@ func (c *Client) sendListNotificationHistories(ctx context.Context) (res *ListSi
 	defer resp.Body.Close()
 
 	result, err := decodeListNotificationHistoriesResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ListSources invokes listSources operation.
+//
+// 通知ルーティングに設定する通知元の情報を取得します。.
+//
+// GET /commonserviceitem/simplenotification/sources
+func (c *Client) ListSources(ctx context.Context) (*ListSourcesResponse, error) {
+	res, err := c.sendListSources(ctx)
+	return res, err
+}
+
+func (c *Client) sendListSources(ctx context.Context) (res *ListSourcesResponse, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/commonserviceitem/simplenotification/sources"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeListSourcesResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}

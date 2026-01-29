@@ -13,6 +13,7 @@ const (
 	GetNotificationHistoryOperation     OperationName = "GetNotificationHistory"
 	ListCommonServiceItemsOperation     OperationName = "ListCommonServiceItems"
 	ListNotificationHistoriesOperation  OperationName = "ListNotificationHistories"
+	ListSourcesOperation                OperationName = "ListSources"
 	ReorderRoutingOperation             OperationName = "ReorderRouting"
 	SendNotificationMessageOperation    OperationName = "SendNotificationMessage"
 	UpdateCommonServiceItemOperation    OperationName = "UpdateCommonServiceItem"

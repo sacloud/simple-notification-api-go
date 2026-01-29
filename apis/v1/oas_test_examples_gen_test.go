@@ -363,6 +363,30 @@ func TestListSimpleNotificationHistoriesResponse_Examples(t *testing.T) {
 		})
 	}
 }
+func TestListSourcesResponse_EncodeDecode(t *testing.T) {
+	var typ ListSourcesResponse
+	typ.SetFake()
+
+	e := jx.Encoder{}
+	typ.Encode(&e)
+	data := e.Bytes()
+	require.True(t, std.Valid(data), "Encoded: %s", data)
+
+	var typ2 ListSourcesResponse
+	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
+}
+func TestListSourcesResponseSourcesItem_EncodeDecode(t *testing.T) {
+	var typ ListSourcesResponseSourcesItem
+	typ.SetFake()
+
+	e := jx.Encoder{}
+	typ.Encode(&e)
+	data := e.Bytes()
+	require.True(t, std.Valid(data), "Encoded: %s", data)
+
+	var typ2 ListSourcesResponseSourcesItem
+	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
+}
 func TestNotificationHistory_EncodeDecode(t *testing.T) {
 	var typ NotificationHistory
 	typ.SetFake()
