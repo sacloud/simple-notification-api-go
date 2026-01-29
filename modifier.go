@@ -63,6 +63,7 @@ func responseModifier(req *http.Request, resp *http.Response) error {
 	if err != nil {
 		return err
 	}
+	resp.Body.Close()
 	// JSON decode
 	var data map[string]interface{}
 	if err := json.Unmarshal(bodyBytes, &data); err != nil {

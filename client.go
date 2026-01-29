@@ -56,7 +56,6 @@ func (c *SimpleNotificationClient) Do(req *http.Request) (*http.Response, error)
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
 	if err := responseModifier(req, resp); err != nil {
 		return nil, err
 	}
