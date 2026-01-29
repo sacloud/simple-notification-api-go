@@ -60,7 +60,9 @@ func responseModifier(req *http.Request, resp *http.Response) error {
 		return nil
 	}
 	body := resp.Body
-	defer body.Close()
+	defer func() {
+		_ = body.Close()
+	}()
 	bodyBytes, err := io.ReadAll(body)
 	if err != nil {
 		return err
