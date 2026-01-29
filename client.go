@@ -15,30 +15,60 @@
 package simplenotification
 
 import (
-	"fmt"
-	"runtime"
+	"net/http"
 
 	"github.com/sacloud/saclient-go"
 	v1 "github.com/sacloud/simple-notification-api-go/apis/v1"
 )
 
-// DefaultAPIRootURL デフォルトのAPIルートURL
-const DefaultAPIRootURL = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/cloud/1.1/"
+const (
+	DefaultAPIRootURL = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/cloud/1.1/"
+)
 
-// UserAgent APIリクエスト時のユーザーエージェント
+/*
+// UserAgent API Request
 var UserAgent = fmt.Sprintf(
+
 	"simple-notification-api-go/%s (%s/%s; +https://github.com/sacloud/simple-notification-api-go)",
 	Version,
 	runtime.GOOS,
 	runtime.GOARCH,
+
 )
+*/
+type SimpleNotificationClient struct {
+	sacloudClient *saclient.Client // フィールド名を明確化
+}
+
+func newSimpleNotificationClient(client *saclient.Client) *SimpleNotificationClient {
+	return &SimpleNotificationClient{
+		sacloudClient: client,
+	}
+}
 
 // NewClient creates a new simple-notification API client with default settings
-func NewClient(client saclient.ClientAPI) (*v1.Client, error) {
+func NewClient(client *saclient.Client) (*v1.Client, error) {
 	return NewClientWithAPIRootURL(client, DefaultAPIRootURL)
 }
 
 // NewClientWithAPIRootURL creates a new simple-notification API client with a custom API root URL
-func NewClientWithAPIRootURL(client saclient.ClientAPI, apiRootURL string) (*v1.Client, error) {
-	return v1.NewClient(apiRootURL, v1.WithClient(client))
+func NewClientWithAPIRootURL(client *saclient.Client, apiRootURL string) (*v1.Client, error) {
+	simpleNotificationClient := newSimpleNotificationClient(client)
+	return v1.NewClient(apiRootURL, v1.WithClient(simpleNotificationClient))
+}
+
+func (c *SimpleNotificationClient) Do(req *http.Request) (*http.Response, error) {
+	req = req.Clone(req.Context())
+
+	if err := requestModifier(req); err != nil {
+		return nil, err
+	}
+	resp, err := c.sacloudClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if err := responseModifier(req, resp); err != nil {
+		return nil, err
+	}
+	return resp, nil
 }
