@@ -77,7 +77,7 @@ func TestGroupOp_List(t *testing.T) {
 func TestGroupOp_Read(t *testing.T) {
 	ctx, groupAPI := groupAPISetup(t)
 
-	id := "113800049313" // 事前に作成したグループIDを指定してください
+	id := "your-group-id" // 事前に作成したグループIDを指定してください
 
 	resp, err := groupAPI.Read(ctx, id)
 	if err != nil {
