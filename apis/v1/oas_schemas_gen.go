@@ -1650,7 +1650,7 @@ type PutCommonServiceItemRequestCommonServiceItem struct {
 	Name        string                                                  `json:"Name"`
 	Description string                                                  `json:"Description"`
 	Tags        []string                                                `json:"Tags"`
-	Icon        *PutCommonServiceItemRequestCommonServiceItemIcon       `json:"Icon"`
+	Icon        PutCommonServiceItemRequestCommonServiceItemIcon        `json:"Icon"`
 	Settings    OptPutCommonServiceItemRequestCommonServiceItemSettings `json:"Settings"`
 }
 
@@ -1670,7 +1670,7 @@ func (s *PutCommonServiceItemRequestCommonServiceItem) GetTags() []string {
 }
 
 // GetIcon returns the value of Icon.
-func (s *PutCommonServiceItemRequestCommonServiceItem) GetIcon() *PutCommonServiceItemRequestCommonServiceItemIcon {
+func (s *PutCommonServiceItemRequestCommonServiceItem) GetIcon() PutCommonServiceItemRequestCommonServiceItemIcon {
 	return s.Icon
 }
 
@@ -1695,7 +1695,7 @@ func (s *PutCommonServiceItemRequestCommonServiceItem) SetTags(val []string) {
 }
 
 // SetIcon sets the value of Icon.
-func (s *PutCommonServiceItemRequestCommonServiceItem) SetIcon(val *PutCommonServiceItemRequestCommonServiceItemIcon) {
+func (s *PutCommonServiceItemRequestCommonServiceItem) SetIcon(val PutCommonServiceItemRequestCommonServiceItemIcon) {
 	s.Icon = val
 }
 

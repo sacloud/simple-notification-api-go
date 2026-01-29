@@ -4029,11 +4029,7 @@ func (s *PutCommonServiceItemRequestCommonServiceItem) encodeFields(e *jx.Encode
 	}
 	{
 		e.FieldStart("Icon")
-		if s.Icon == nil {
-			e.Null()
-		} else {
-			s.Icon.Encode(e)
-		}
+		s.Icon.Encode(e)
 	}
 	{
 		if s.Settings.Set {
@@ -4107,12 +4103,9 @@ func (s *PutCommonServiceItemRequestCommonServiceItem) Decode(d *jx.Decoder) err
 		case "Icon":
 			requiredBitSet[0] |= 1 << 3
 			if err := func() error {
-				s.Icon = nil
-				var elem PutCommonServiceItemRequestCommonServiceItemIcon
-				if err := elem.Decode(d); err != nil {
+				if err := s.Icon.Decode(d); err != nil {
 					return err
 				}
-				s.Icon = &elem
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"Icon\"")
