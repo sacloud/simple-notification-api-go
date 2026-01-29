@@ -25,19 +25,8 @@ const (
 	DefaultAPIRootURL = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/cloud/1.1/"
 )
 
-/*
-// UserAgent API Request
-var UserAgent = fmt.Sprintf(
-
-	"simple-notification-api-go/%s (%s/%s; +https://github.com/sacloud/simple-notification-api-go)",
-	Version,
-	runtime.GOOS,
-	runtime.GOARCH,
-
-)
-*/
 type SimpleNotificationClient struct {
-	sacloudClient *saclient.Client // フィールド名を明確化
+	sacloudClient *saclient.Client
 }
 
 func newSimpleNotificationClient(client *saclient.Client) *SimpleNotificationClient {

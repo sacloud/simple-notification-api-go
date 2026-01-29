@@ -77,7 +77,7 @@ func TestGroupOp_List(t *testing.T) {
 func TestGroupOp_Read(t *testing.T) {
 	ctx, groupAPI := groupAPISetup(t)
 
-	id := "your-group-id" // 事前に作成したグループIDを指定してください
+	id := "your-group-id" // set your pre-created group ID here
 
 	resp, err := groupAPI.Read(ctx, id)
 	if err != nil {
@@ -92,7 +92,7 @@ func TestGroupOp_Read(t *testing.T) {
 func TestGroupOp_Update(t *testing.T) {
 	ctx, groupAPI := groupAPISetup(t)
 
-	id := "your-group-id" // 事前に作成したグループIDを指定してください
+	id := "your-group-id" // set your pre-created group ID here
 	groupname := "updated-group"
 	description := "updated-description"
 	tags := []string{"updated"}
@@ -113,7 +113,7 @@ func TestGroupOp_Update(t *testing.T) {
 func TestGroupOp_UpdateWithoutSetting(t *testing.T) {
 	ctx, groupAPI := groupAPISetup(t)
 
-	id := "your-group-id" // 事前に作成したグループIDを指定してください
+	id := "your-group-id" // set your pre-created group ID here
 	groupname := "updated-group"
 	description := "updated-description"
 	tags := []string{"updated"}
@@ -131,7 +131,7 @@ func TestGroupOp_UpdateWithoutSetting(t *testing.T) {
 func TestGroupOp_Delete(t *testing.T) {
 	ctx, groupAPI := groupAPISetup(t)
 
-	id := "your-group-id" // 事前に作成したグループIDを指定してください
+	id := "your-group-id" // set your pre-created group ID here
 
 	err := groupAPI.Delete(ctx, id)
 	if err != nil {
@@ -143,7 +143,7 @@ func TestGroupOp_Delete(t *testing.T) {
 func TestGroupOp_SendMessage(t *testing.T) {
 	ctx, groupAPI := groupAPISetup(t)
 
-	id := "your-group-id" // 事前に作成したグループIDを指定してください
+	id := "your-group-id" // set your pre-created group ID here
 	request := v1.SendNotificationMessageRequest{
 		Message: "test message from GroupOp.SendMessage",
 	}
