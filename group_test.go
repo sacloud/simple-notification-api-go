@@ -1,4 +1,4 @@
-// Copyright 2025- The sacloud/simple-notification-api-go Authors
+// Copyright 2026- The sacloud/simple-notification-api-go Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@ package simplenotification_test
 
 import (
 	"context"
+	"os"
 	"testing"
 
 	"github.com/sacloud/packages-go/testutil"
@@ -25,8 +26,12 @@ import (
 	v1 "github.com/sacloud/simple-notification-api-go/apis/v1"
 )
 
+func getenv(key string) string {
+	return os.Getenv(key)
+}
+
 func groupAPISetup(t *testing.T) (ctx context.Context, api simplenotification.GroupAPI) {
-	testutil.PreCheckEnvsFunc("SAKURACLOUD_ACCESS_TOKEN", "SAKURACLOUD_ACCESS_TOKEN_SECRET")(t)
+	testutil.PreCheckEnvsFunc("SAKURA_ACCESS_TOKEN", "SAKURA_ACCESS_TOKEN_SECRET", "DESTINATION_TEST_ID")(t)
 
 	ctx = t.Context()
 
@@ -41,119 +46,109 @@ func groupAPISetup(t *testing.T) (ctx context.Context, api simplenotification.Gr
 	return ctx, api
 }
 
-func TestGroupOp_Create(t *testing.T) {
+func TestGroupOp(t *testing.T) {
 	ctx, groupAPI := groupAPISetup(t)
 
-	groupname := "test-group"
+	id := "" // set your pre-created group ID here
+	groupname := "test-group-1"
 	description := "test-group-description"
 	tags := []string{"test"}
+	destinationID := os.Getenv("DESTINATION_TEST_ID")
 	setting := v1.CommonServiceItemGroupSettings{
-		Destinations: []string{"destination-id"},
+		Destinations: []string{destinationID},
 	}
 
-	resp, err := groupAPI.Create(ctx, groupname, description, tags, setting)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if resp == nil {
-		t.Fatal("expected response but got nil")
-	}
-	t.Logf("GroupOp.Create response: %+v", resp)
-}
+	result := t.Run("Create", func(t *testing.T) {
+		resp, err := groupAPI.Create(ctx, groupname, description, tags, setting)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		if resp == nil {
+			t.Fatal("expected response but got nil")
+		}
+		t.Logf("GroupOp.Create response: %+v", resp)
+		id = resp.ID
+	})
+	defer func() {
+		if id != "" {
+			err := groupAPI.Delete(ctx, id)
+			if err != nil {
+				t.Fatalf("unexpected error on cleanup: %v", err)
+			}
+			t.Log("GroupOp.Delete succeeded on cleanup")
+		}
+	}()
 
-func TestGroupOp_List(t *testing.T) {
-	ctx, groupAPI := groupAPISetup(t)
-
-	resp, err := groupAPI.List(ctx)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if resp == nil {
-		t.Fatal("expected response but got nil")
-	}
-	t.Logf("GroupOp.List response: %+v", resp)
-}
-
-func TestGroupOp_Read(t *testing.T) {
-	ctx, groupAPI := groupAPISetup(t)
-
-	id := "your-group-id" // set your pre-created group ID here
-
-	resp, err := groupAPI.Read(ctx, id)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if resp == nil {
-		t.Fatal("expected response but got nil")
-	}
-	t.Logf("GroupOp.Read response: %+v", resp)
-}
-
-func TestGroupOp_Update(t *testing.T) {
-	ctx, groupAPI := groupAPISetup(t)
-
-	id := "your-group-id" // set your pre-created group ID here
-	groupname := "updated-group"
-	description := "updated-description"
-	tags := []string{"updated"}
-	setting := v1.CommonServiceItemGroupSettings{
-		Destinations: []string{"destination-id"},
+	if !result {
+		t.Fatal("skipping rest of tests due to Create failure")
 	}
 
-	resp, err := groupAPI.Update(ctx, id, groupname, description, tags, &setting)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if resp == nil {
-		t.Fatal("expected response but got nil")
-	}
-	t.Logf("GroupOp.Update response: %+v", resp)
-}
+	t.Run("List", func(t *testing.T) {
+		resp, err := groupAPI.List(ctx)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		if resp == nil {
+			t.Fatal("expected response but got nil")
+		}
+		t.Logf("GroupOp.List response: %+v", resp)
+	})
+	t.Run("Read", func(t *testing.T) {
+		resp, err := groupAPI.Read(ctx, id)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		if resp == nil {
+			t.Fatal("expected response but got nil")
+		}
+		t.Logf("GroupOp.Read response: %+v", resp)
+	})
+	t.Run("Update", func(t *testing.T) {
+		groupnameUpdate := "updated-group"
+		descriptionUpdate := "updated-description"
+		tagsUpdate := []string{"updated"}
+		resp, err := groupAPI.Update(ctx, id, groupnameUpdate, descriptionUpdate, tagsUpdate, &setting)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		if resp == nil {
+			t.Fatal("expected response but got nil")
+		}
+		t.Logf("GroupOp.Update response: %+v", resp)
+	})
+	t.Run("UpdateWithoutSetting", func(t *testing.T) {
+		groupnameUpdateWithoutsetting := "updated-group-withoutsetting"
+		descriptionUpdateWithoutsetting := "updated-description-withoutsetting"
+		tagsUpdateWithoutsetting := []string{"updated-withoutsetting"}
+		resp, err := groupAPI.Update(ctx, id, groupnameUpdateWithoutsetting, descriptionUpdateWithoutsetting, tagsUpdateWithoutsetting, nil)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		if resp == nil {
+			t.Fatal("expected response but got nil")
+		}
+		t.Logf("GroupOp.UpdateWithoutSetting response: %+v", resp)
+	})
+	t.Run("SendMessage", func(t *testing.T) {
+		request := v1.SendNotificationMessageRequest{
+			Message: "test message from GroupOp.SendMessage",
+		}
 
-func TestGroupOp_UpdateWithoutSetting(t *testing.T) {
-	ctx, groupAPI := groupAPISetup(t)
-
-	id := "your-group-id" // set your pre-created group ID here
-	groupname := "updated-group"
-	description := "updated-description"
-	tags := []string{"updated"}
-
-	resp, err := groupAPI.Update(ctx, id, groupname, description, tags, nil)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if resp == nil {
-		t.Fatal("expected response but got nil")
-	}
-	t.Logf("GroupOp.UpdateWithoutSetting response: %+v", resp)
-}
-
-func TestGroupOp_Delete(t *testing.T) {
-	ctx, groupAPI := groupAPISetup(t)
-
-	id := "your-group-id" // set your pre-created group ID here
-
-	err := groupAPI.Delete(ctx, id)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	t.Log("GroupOp.Delete succeeded")
-}
-
-func TestGroupOp_SendMessage(t *testing.T) {
-	ctx, groupAPI := groupAPISetup(t)
-
-	id := "your-group-id" // set your pre-created group ID here
-	request := v1.SendNotificationMessageRequest{
-		Message: "test message from GroupOp.SendMessage",
-	}
-
-	resp, err := groupAPI.SendMessage(ctx, id, request)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if resp == nil {
-		t.Fatal("expected response but got nil")
-	}
-	t.Logf("GroupOp.SendMessage response: %+v", resp)
+		resp, err := groupAPI.SendMessage(ctx, id, request)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		if resp == nil {
+			t.Fatal("expected response but got nil")
+		}
+		t.Logf("GroupOp.SendMessage response: %+v", resp)
+	})
+	t.Run("Delete", func(t *testing.T) {
+		err := groupAPI.Delete(ctx, id)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		t.Log("GroupOp.Delete succeeded")
+		id = "" // prevent double delete in defer
+	})
 }
