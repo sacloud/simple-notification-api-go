@@ -1,6 +1,6 @@
 #====================
 AUTHOR         ?= The sacloud/simple-notification-api-go Authors
-COPYRIGHT_YEAR ?= 2022-2025
+COPYRIGHT_YEAR ?= 2022-2026
 
 BIN            ?= simple-notification-api-go 
 GO_FILES       ?= $(shell find . -name '*.go')
