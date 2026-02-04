@@ -1,4 +1,4 @@
-// Copyright 2025- The sacloud/simple-notification-api-go Authors
+// Copyright 2026- The sacloud/simple-notification-api-go Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ func NewGroupOp(client *v1.Client) GroupAPI {
 }
 
 func (o *GroupOp) List(ctx context.Context) (*v1.ListCommonServiceItemsResponse, error) {
-	const methodName = "GroupAPI.List"
+	const methodName = "Group.List"
 
 	ctx = setContextProviderClass(ctx, v1.CommonServiceItemProviderClassSaknoticegroup)
 	res, err := o.client.ListCommonServiceItems(ctx)
@@ -60,7 +60,7 @@ func (o *GroupOp) List(ctx context.Context) (*v1.ListCommonServiceItemsResponse,
 
 func (o *GroupOp) Create(ctx context.Context, groupname, description string, tags []string,
 	setting v1.CommonServiceItemGroupSettings) (*v1.CommonServiceItem, error) {
-	const methodName = "GroupAPI.Create"
+	const methodName = "Group.Create"
 	req := v1.PostCommonServiceItemRequest{
 		CommonServiceItem: v1.PostCommonServiceItemRequestCommonServiceItem{
 			Name:        groupname,
@@ -87,7 +87,7 @@ func (o *GroupOp) Create(ctx context.Context, groupname, description string, tag
 }
 
 func (o *GroupOp) Read(ctx context.Context, id string) (*v1.CommonServiceItem, error) {
-	const methodName = "GroupAPI.Read"
+	const methodName = "Group.Read"
 	res, err := o.client.GetCommonServiceItem(ctx, v1.GetCommonServiceItemParams{ID: id})
 	if err != nil {
 		var e *v1.ErrorStatusCode
@@ -101,7 +101,7 @@ func (o *GroupOp) Read(ctx context.Context, id string) (*v1.CommonServiceItem, e
 
 func (o *GroupOp) Update(ctx context.Context, id, groupname, description string, tags []string,
 	optSetting *v1.CommonServiceItemGroupSettings) (*v1.CommonServiceItem, error) {
-	const methodName = "GroupAPI.Update"
+	const methodName = "Group.Update"
 	setting := v1.CommonServiceItemGroupSettings{}
 	set := false
 
@@ -135,7 +135,7 @@ func (o *GroupOp) Update(ctx context.Context, id, groupname, description string,
 }
 
 func (o *GroupOp) Delete(ctx context.Context, id string) error {
-	const methodName = "GroupAPI.Delete"
+	const methodName = "Group.Delete"
 	_, err := o.client.DeleteCommonServiceItem(ctx, v1.DeleteCommonServiceItemParams{ID: id})
 	if err != nil {
 		var e *v1.ErrorStatusCode
