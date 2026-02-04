@@ -38,7 +38,8 @@ func requestModifier(req *http.Request) error {
 	listpath := strings.TrimSuffix(req.URL.Path, "/")
 
 	// commonserviceitem list API , Provider.Class query param setting
-	if path.Base(listpath) == CommonServiceItemPath {
+	if path.Base(listpath) == CommonServiceItemPath &&
+		req.Method == http.MethodGet {
 		providerTarget, err := getContextProviderClass(req.Context())
 		if err != nil {
 			return err
@@ -51,9 +52,6 @@ func requestModifier(req *http.Request) error {
 }
 
 func responseModifier(req *http.Request, resp *http.Response) error {
-	if req.Method != http.MethodGet {
-		return nil
-	}
 	// commonserviceitem　list and get check.
 	if !strings.Contains(req.URL.String(), CommonServiceItemPath) {
 		fmt.Println("responseModifier: skip not commonserviceitem path:", req.URL.String())
@@ -126,7 +124,7 @@ func replaceIconNullWithCommonServiceItem(items map[string]interface{}) map[stri
 		return items
 	}
 
-	// case : Get
+	// case : default
 	if data, ok := items[CommonServiceItemKey].(map[string]interface{}); ok {
 		replaceIcon(data)
 		items[CommonServiceItemKey] = data
