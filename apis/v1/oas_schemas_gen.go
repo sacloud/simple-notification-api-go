@@ -16,14 +16,14 @@ func (s *ErrorStatusCode) Error() string {
 // Ref: #/components/schemas/CommonServiceItem
 type CommonServiceItem struct {
 	Index       OptInt                    `json:"Index"`
-	ID          int                       `json:"ID"`
+	ID          string                    `json:"ID"`
 	Name        string                    `json:"Name"`
 	Description string                    `json:"Description"`
 	Settings    CommonServiceItemSettings `json:"Settings"`
 	CreatedAt   time.Time                 `json:"CreatedAt"`
 	ModifiedAt  time.Time                 `json:"ModifiedAt"`
 	Provider    CommonServiceItemProvider `json:"Provider"`
-	Icon        CommonServiceItemIcon     `json:"Icon"`
+	Icon        *CommonServiceItemIcon    `json:"Icon"`
 	Tags        []string                  `json:"Tags"`
 }
 
@@ -33,7 +33,7 @@ func (s *CommonServiceItem) GetIndex() OptInt {
 }
 
 // GetID returns the value of ID.
-func (s *CommonServiceItem) GetID() int {
+func (s *CommonServiceItem) GetID() string {
 	return s.ID
 }
 
@@ -68,7 +68,7 @@ func (s *CommonServiceItem) GetProvider() CommonServiceItemProvider {
 }
 
 // GetIcon returns the value of Icon.
-func (s *CommonServiceItem) GetIcon() CommonServiceItemIcon {
+func (s *CommonServiceItem) GetIcon() *CommonServiceItemIcon {
 	return s.Icon
 }
 
@@ -83,7 +83,7 @@ func (s *CommonServiceItem) SetIndex(val OptInt) {
 }
 
 // SetID sets the value of ID.
-func (s *CommonServiceItem) SetID(val int) {
+func (s *CommonServiceItem) SetID(val string) {
 	s.ID = val
 }
 
@@ -118,7 +118,7 @@ func (s *CommonServiceItem) SetProvider(val CommonServiceItemProvider) {
 }
 
 // SetIcon sets the value of Icon.
-func (s *CommonServiceItem) SetIcon(val CommonServiceItemIcon) {
+func (s *CommonServiceItem) SetIcon(val *CommonServiceItemIcon) {
 	s.Icon = val
 }
 
@@ -464,18 +464,40 @@ func NewCommonServiceItemRoutingSettingsCommonServiceItemSettings(v CommonServic
 	return s
 }
 
-type CreateCommonServiceItemOK struct {
+type CreateCommonServiceItemCreated struct {
 	CommonServiceItem CommonServiceItem `json:"CommonServiceItem"`
+	Success           OptBool           `json:"Success"`
+	IsOk              OptBool           `json:"is_ok"`
 }
 
 // GetCommonServiceItem returns the value of CommonServiceItem.
-func (s *CreateCommonServiceItemOK) GetCommonServiceItem() CommonServiceItem {
+func (s *CreateCommonServiceItemCreated) GetCommonServiceItem() CommonServiceItem {
 	return s.CommonServiceItem
 }
 
+// GetSuccess returns the value of Success.
+func (s *CreateCommonServiceItemCreated) GetSuccess() OptBool {
+	return s.Success
+}
+
+// GetIsOk returns the value of IsOk.
+func (s *CreateCommonServiceItemCreated) GetIsOk() OptBool {
+	return s.IsOk
+}
+
 // SetCommonServiceItem sets the value of CommonServiceItem.
-func (s *CreateCommonServiceItemOK) SetCommonServiceItem(val CommonServiceItem) {
+func (s *CreateCommonServiceItemCreated) SetCommonServiceItem(val CommonServiceItem) {
 	s.CommonServiceItem = val
+}
+
+// SetSuccess sets the value of Success.
+func (s *CreateCommonServiceItemCreated) SetSuccess(val OptBool) {
+	s.Success = val
+}
+
+// SetIsOk sets the value of IsOk.
+func (s *CreateCommonServiceItemCreated) SetIsOk(val OptBool) {
+	s.IsOk = val
 }
 
 type DeleteCommonServiceItemOK struct {
@@ -1381,12 +1403,13 @@ func (s *PostCommonServiceItemRequest) SetCommonServiceItem(val PostCommonServic
 }
 
 type PostCommonServiceItemRequestCommonServiceItem struct {
-	Name        string                                                `json:"Name"`
-	Description string                                                `json:"Description"`
-	Tags        []string                                              `json:"Tags"`
-	Icon        PostCommonServiceItemRequestCommonServiceItemIcon     `json:"Icon"`
-	Provider    PostCommonServiceItemRequestCommonServiceItemProvider `json:"Provider"`
-	Settings    PostCommonServiceItemRequestCommonServiceItemSettings `json:"Settings"`
+	Name         string                                                `json:"Name"`
+	Description  string                                                `json:"Description"`
+	Tags         []string                                              `json:"Tags"`
+	Icon         PostCommonServiceItemRequestCommonServiceItemIcon     `json:"Icon"`
+	ServiceClass OptString                                             `json:"ServiceClass"`
+	Provider     PostCommonServiceItemRequestCommonServiceItemProvider `json:"Provider"`
+	Settings     PostCommonServiceItemRequestCommonServiceItemSettings `json:"Settings"`
 }
 
 // GetName returns the value of Name.
@@ -1407,6 +1430,11 @@ func (s *PostCommonServiceItemRequestCommonServiceItem) GetTags() []string {
 // GetIcon returns the value of Icon.
 func (s *PostCommonServiceItemRequestCommonServiceItem) GetIcon() PostCommonServiceItemRequestCommonServiceItemIcon {
 	return s.Icon
+}
+
+// GetServiceClass returns the value of ServiceClass.
+func (s *PostCommonServiceItemRequestCommonServiceItem) GetServiceClass() OptString {
+	return s.ServiceClass
 }
 
 // GetProvider returns the value of Provider.
@@ -1437,6 +1465,11 @@ func (s *PostCommonServiceItemRequestCommonServiceItem) SetTags(val []string) {
 // SetIcon sets the value of Icon.
 func (s *PostCommonServiceItemRequestCommonServiceItem) SetIcon(val PostCommonServiceItemRequestCommonServiceItemIcon) {
 	s.Icon = val
+}
+
+// SetServiceClass sets the value of ServiceClass.
+func (s *PostCommonServiceItemRequestCommonServiceItem) SetServiceClass(val OptString) {
+	s.ServiceClass = val
 }
 
 // SetProvider sets the value of Provider.

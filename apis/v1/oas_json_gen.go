@@ -29,7 +29,7 @@ func (s *CommonServiceItem) encodeFields(e *jx.Encoder) {
 	}
 	{
 		e.FieldStart("ID")
-		e.Int(s.ID)
+		e.Str(s.ID)
 	}
 	{
 		e.FieldStart("Name")
@@ -57,7 +57,11 @@ func (s *CommonServiceItem) encodeFields(e *jx.Encoder) {
 	}
 	{
 		e.FieldStart("Icon")
-		s.Icon.Encode(e)
+		if s.Icon == nil {
+			e.Null()
+		} else {
+			s.Icon.Encode(e)
+		}
 	}
 	{
 		e.FieldStart("Tags")
@@ -104,8 +108,8 @@ func (s *CommonServiceItem) Decode(d *jx.Decoder) error {
 		case "ID":
 			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
-				v, err := d.Int()
-				s.ID = int(v)
+				v, err := d.Str()
+				s.ID = string(v)
 				if err != nil {
 					return err
 				}
@@ -184,9 +188,12 @@ func (s *CommonServiceItem) Decode(d *jx.Decoder) error {
 		case "Icon":
 			requiredBitSet[1] |= 1 << 0
 			if err := func() error {
-				if err := s.Icon.Decode(d); err != nil {
+				s.Icon = nil
+				var elem CommonServiceItemIcon
+				if err := elem.Decode(d); err != nil {
 					return err
 				}
+				s.Icon = &elem
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"Icon\"")
@@ -1181,28 +1188,42 @@ func (s *CommonServiceItemSettings) UnmarshalJSON(data []byte) error {
 }
 
 // Encode implements json.Marshaler.
-func (s *CreateCommonServiceItemOK) Encode(e *jx.Encoder) {
+func (s *CreateCommonServiceItemCreated) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
 	e.ObjEnd()
 }
 
 // encodeFields encodes fields.
-func (s *CreateCommonServiceItemOK) encodeFields(e *jx.Encoder) {
+func (s *CreateCommonServiceItemCreated) encodeFields(e *jx.Encoder) {
 	{
 		e.FieldStart("CommonServiceItem")
 		s.CommonServiceItem.Encode(e)
 	}
+	{
+		if s.Success.Set {
+			e.FieldStart("Success")
+			s.Success.Encode(e)
+		}
+	}
+	{
+		if s.IsOk.Set {
+			e.FieldStart("is_ok")
+			s.IsOk.Encode(e)
+		}
+	}
 }
 
-var jsonFieldsNameOfCreateCommonServiceItemOK = [1]string{
+var jsonFieldsNameOfCreateCommonServiceItemCreated = [3]string{
 	0: "CommonServiceItem",
+	1: "Success",
+	2: "is_ok",
 }
 
-// Decode decodes CreateCommonServiceItemOK from json.
-func (s *CreateCommonServiceItemOK) Decode(d *jx.Decoder) error {
+// Decode decodes CreateCommonServiceItemCreated from json.
+func (s *CreateCommonServiceItemCreated) Decode(d *jx.Decoder) error {
 	if s == nil {
-		return errors.New("invalid: unable to decode CreateCommonServiceItemOK to nil")
+		return errors.New("invalid: unable to decode CreateCommonServiceItemCreated to nil")
 	}
 	var requiredBitSet [1]uint8
 
@@ -1218,12 +1239,32 @@ func (s *CreateCommonServiceItemOK) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"CommonServiceItem\"")
 			}
+		case "Success":
+			if err := func() error {
+				s.Success.Reset()
+				if err := s.Success.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"Success\"")
+			}
+		case "is_ok":
+			if err := func() error {
+				s.IsOk.Reset()
+				if err := s.IsOk.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"is_ok\"")
+			}
 		default:
 			return d.Skip()
 		}
 		return nil
 	}); err != nil {
-		return errors.Wrap(err, "decode CreateCommonServiceItemOK")
+		return errors.Wrap(err, "decode CreateCommonServiceItemCreated")
 	}
 	// Validate required fields.
 	var failures []validate.FieldError
@@ -1240,8 +1281,8 @@ func (s *CreateCommonServiceItemOK) Decode(d *jx.Decoder) error {
 				bitIdx := bits.TrailingZeros8(result)
 				fieldIdx := i*8 + bitIdx
 				var name string
-				if fieldIdx < len(jsonFieldsNameOfCreateCommonServiceItemOK) {
-					name = jsonFieldsNameOfCreateCommonServiceItemOK[fieldIdx]
+				if fieldIdx < len(jsonFieldsNameOfCreateCommonServiceItemCreated) {
+					name = jsonFieldsNameOfCreateCommonServiceItemCreated[fieldIdx]
 				} else {
 					name = strconv.Itoa(fieldIdx)
 				}
@@ -1262,14 +1303,14 @@ func (s *CreateCommonServiceItemOK) Decode(d *jx.Decoder) error {
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s *CreateCommonServiceItemOK) MarshalJSON() ([]byte, error) {
+func (s *CreateCommonServiceItemCreated) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *CreateCommonServiceItemOK) UnmarshalJSON(data []byte) error {
+func (s *CreateCommonServiceItemCreated) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -3368,6 +3409,12 @@ func (s *PostCommonServiceItemRequestCommonServiceItem) encodeFields(e *jx.Encod
 		s.Icon.Encode(e)
 	}
 	{
+		if s.ServiceClass.Set {
+			e.FieldStart("ServiceClass")
+			s.ServiceClass.Encode(e)
+		}
+	}
+	{
 		e.FieldStart("Provider")
 		s.Provider.Encode(e)
 	}
@@ -3377,13 +3424,14 @@ func (s *PostCommonServiceItemRequestCommonServiceItem) encodeFields(e *jx.Encod
 	}
 }
 
-var jsonFieldsNameOfPostCommonServiceItemRequestCommonServiceItem = [6]string{
+var jsonFieldsNameOfPostCommonServiceItemRequestCommonServiceItem = [7]string{
 	0: "Name",
 	1: "Description",
 	2: "Tags",
 	3: "Icon",
-	4: "Provider",
-	5: "Settings",
+	4: "ServiceClass",
+	5: "Provider",
+	6: "Settings",
 }
 
 // Decode decodes PostCommonServiceItemRequestCommonServiceItem from json.
@@ -3449,8 +3497,18 @@ func (s *PostCommonServiceItemRequestCommonServiceItem) Decode(d *jx.Decoder) er
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"Icon\"")
 			}
+		case "ServiceClass":
+			if err := func() error {
+				s.ServiceClass.Reset()
+				if err := s.ServiceClass.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"ServiceClass\"")
+			}
 		case "Provider":
-			requiredBitSet[0] |= 1 << 4
+			requiredBitSet[0] |= 1 << 5
 			if err := func() error {
 				if err := s.Provider.Decode(d); err != nil {
 					return err
@@ -3460,7 +3518,7 @@ func (s *PostCommonServiceItemRequestCommonServiceItem) Decode(d *jx.Decoder) er
 				return errors.Wrap(err, "decode field \"Provider\"")
 			}
 		case "Settings":
-			requiredBitSet[0] |= 1 << 5
+			requiredBitSet[0] |= 1 << 6
 			if err := func() error {
 				if err := s.Settings.Decode(d); err != nil {
 					return err
@@ -3479,7 +3537,7 @@ func (s *PostCommonServiceItemRequestCommonServiceItem) Decode(d *jx.Decoder) er
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00111111,
+		0b01101111,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.

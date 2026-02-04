@@ -363,7 +363,7 @@ func (s CommonServiceItemSettings) Validate() error {
 	}
 }
 
-func (s *CreateCommonServiceItemOK) Validate() error {
+func (s *CreateCommonServiceItemCreated) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}

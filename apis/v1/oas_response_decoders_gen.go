@@ -13,10 +13,10 @@ import (
 	"github.com/ogen-go/ogen/validate"
 )
 
-func decodeCreateCommonServiceItemResponse(resp *http.Response) (res *CreateCommonServiceItemOK, _ error) {
+func decodeCreateCommonServiceItemResponse(resp *http.Response) (res *CreateCommonServiceItemCreated, _ error) {
 	switch resp.StatusCode {
-	case 200:
-		// Code 200.
+	case 201:
+		// Code 201.
 		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
 		if err != nil {
 			return res, errors.Wrap(err, "parse media type")
@@ -29,7 +29,7 @@ func decodeCreateCommonServiceItemResponse(resp *http.Response) (res *CreateComm
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response CreateCommonServiceItemOK
+			var response CreateCommonServiceItemCreated
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err

@@ -26,7 +26,7 @@ type Invoker interface {
 	// Class`の値に応じて必要な`Settings`の内容が異なります。.
 	//
 	// POST /commonserviceitem
-	CreateCommonServiceItem(ctx context.Context, request OptPostCommonServiceItemRequest) (*CreateCommonServiceItemOK, error)
+	CreateCommonServiceItem(ctx context.Context, request OptPostCommonServiceItemRequest) (*CreateCommonServiceItemCreated, error)
 	// DeleteCommonServiceItem invokes deleteCommonServiceItem operation.
 	//
 	// リソースの削除。.
@@ -142,12 +142,12 @@ func (c *Client) requestURL(ctx context.Context) *url.URL {
 // Class`の値に応じて必要な`Settings`の内容が異なります。.
 //
 // POST /commonserviceitem
-func (c *Client) CreateCommonServiceItem(ctx context.Context, request OptPostCommonServiceItemRequest) (*CreateCommonServiceItemOK, error) {
+func (c *Client) CreateCommonServiceItem(ctx context.Context, request OptPostCommonServiceItemRequest) (*CreateCommonServiceItemCreated, error) {
 	res, err := c.sendCreateCommonServiceItem(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendCreateCommonServiceItem(ctx context.Context, request OptPostCommonServiceItemRequest) (res *CreateCommonServiceItemOK, err error) {
+func (c *Client) sendCreateCommonServiceItem(ctx context.Context, request OptPostCommonServiceItemRequest) (res *CreateCommonServiceItemCreated, err error) {
 	// Validate request before sending.
 	if err := func() error {
 		if value, ok := request.Get(); ok {

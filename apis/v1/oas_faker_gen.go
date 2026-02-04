@@ -15,7 +15,7 @@ func (s *CommonServiceItem) SetFake() {
 	}
 	{
 		{
-			s.ID = int(0)
+			s.ID = "string"
 		}
 	}
 	{
@@ -49,8 +49,8 @@ func (s *CommonServiceItem) SetFake() {
 		}
 	}
 	{
-		{
-			s.Icon.SetFake()
+		{ // Keep pointer nil to prevent infinite recursion.
+			s.Icon = nil
 		}
 	}
 	{
@@ -186,10 +186,20 @@ func (s *CommonServiceItemSettings) SetFake() {
 }
 
 // SetFake set fake values.
-func (s *CreateCommonServiceItemOK) SetFake() {
+func (s *CreateCommonServiceItemCreated) SetFake() {
 	{
 		{
 			s.CommonServiceItem.SetFake()
+		}
+	}
+	{
+		{
+			s.Success.SetFake()
+		}
+	}
+	{
+		{
+			s.IsOk.SetFake()
 		}
 	}
 }
@@ -577,6 +587,11 @@ func (s *PostCommonServiceItemRequestCommonServiceItem) SetFake() {
 	{
 		{
 			s.Icon.SetFake()
+		}
+	}
+	{
+		{
+			s.ServiceClass.SetFake()
 		}
 	}
 	{
