@@ -1,4 +1,4 @@
-// Copyright 2025- The sacloud/simple-notification-api-go Authors
+// Copyright 2026- The sacloud/simple-notification-api-go Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import (
 )
 
 const (
-	DefaultAPIRootURL = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/cloud/1.1/"
+	defaultAPIRootURL = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/cloud/1.1/"
 )
 
 type SimpleNotificationClient struct {
@@ -37,7 +37,7 @@ func newSimpleNotificationClient(client *saclient.Client) *SimpleNotificationCli
 
 // NewClient creates a new simple-notification API client with default settings
 func NewClient(client *saclient.Client) (*v1.Client, error) {
-	return NewClientWithAPIRootURL(client, DefaultAPIRootURL)
+	return NewClientWithAPIRootURL(client, defaultAPIRootURL)
 }
 
 // NewClientWithAPIRootURL creates a new simple-notification API client with a custom API root URL
