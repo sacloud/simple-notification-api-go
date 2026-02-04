@@ -37,6 +37,7 @@ func newSimpleNotificationClient(client *saclient.Client) *SimpleNotificationCli
 
 // NewClient creates a new simple-notification API client with default settings
 func NewClient(client *saclient.Client) (*v1.Client, error) {
+	client.SetWith(saclient.WithBigInt(false))
 	return NewClientWithAPIRootURL(client, defaultAPIRootURL)
 }
 
