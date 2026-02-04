@@ -17,7 +17,6 @@ package simplenotification
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"path"
@@ -54,7 +53,6 @@ func requestModifier(req *http.Request) error {
 func responseModifier(req *http.Request, resp *http.Response) error {
 	// commonserviceitem　list and get check.
 	if !strings.Contains(req.URL.String(), CommonServiceItemPath) {
-		fmt.Println("responseModifier: skip not commonserviceitem path:", req.URL.String())
 		return nil
 	}
 	body := resp.Body
