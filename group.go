@@ -159,7 +159,7 @@ func (o *GroupOp) Delete(ctx context.Context, id string) error {
 }
 
 func (o *GroupOp) SendMessage(ctx context.Context, id string, request v1.SendNotificationMessageRequest) (*v1.SendNotificationMessageResponse, error) {
-	const methodName = "GroupAPI.SendMessage"
+	const methodName = "Group.SendMessage"
 	res, err := o.client.SendNotificationMessage(ctx, v1.OptSendNotificationMessageRequest{Value: request, Set: true}, v1.SendNotificationMessageParams{ID: id})
 	if err != nil {
 		var e *v1.ErrorStatusCode
