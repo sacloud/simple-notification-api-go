@@ -192,16 +192,6 @@ func (s *CreateCommonServiceItemCreated) SetFake() {
 			s.CommonServiceItem.SetFake()
 		}
 	}
-	{
-		{
-			s.Success.SetFake()
-		}
-	}
-	{
-		{
-			s.IsOk.SetFake()
-		}
-	}
 }
 
 // SetFake set fake values.

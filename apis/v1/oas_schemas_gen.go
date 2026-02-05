@@ -466,8 +466,6 @@ func NewCommonServiceItemRoutingSettingsCommonServiceItemSettings(v CommonServic
 
 type CreateCommonServiceItemCreated struct {
 	CommonServiceItem CommonServiceItem `json:"CommonServiceItem"`
-	Success           OptBool           `json:"Success"`
-	IsOk              OptBool           `json:"is_ok"`
 }
 
 // GetCommonServiceItem returns the value of CommonServiceItem.
@@ -475,29 +473,9 @@ func (s *CreateCommonServiceItemCreated) GetCommonServiceItem() CommonServiceIte
 	return s.CommonServiceItem
 }
 
-// GetSuccess returns the value of Success.
-func (s *CreateCommonServiceItemCreated) GetSuccess() OptBool {
-	return s.Success
-}
-
-// GetIsOk returns the value of IsOk.
-func (s *CreateCommonServiceItemCreated) GetIsOk() OptBool {
-	return s.IsOk
-}
-
 // SetCommonServiceItem sets the value of CommonServiceItem.
 func (s *CreateCommonServiceItemCreated) SetCommonServiceItem(val CommonServiceItem) {
 	s.CommonServiceItem = val
-}
-
-// SetSuccess sets the value of Success.
-func (s *CreateCommonServiceItemCreated) SetSuccess(val OptBool) {
-	s.Success = val
-}
-
-// SetIsOk sets the value of IsOk.
-func (s *CreateCommonServiceItemCreated) SetIsOk(val OptBool) {
-	s.IsOk = val
 }
 
 type DeleteCommonServiceItemOK struct {

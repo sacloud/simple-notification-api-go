@@ -1193,24 +1193,10 @@ func (s *CreateCommonServiceItemCreated) encodeFields(e *jx.Encoder) {
 		e.FieldStart("CommonServiceItem")
 		s.CommonServiceItem.Encode(e)
 	}
-	{
-		if s.Success.Set {
-			e.FieldStart("Success")
-			s.Success.Encode(e)
-		}
-	}
-	{
-		if s.IsOk.Set {
-			e.FieldStart("is_ok")
-			s.IsOk.Encode(e)
-		}
-	}
 }
 
-var jsonFieldsNameOfCreateCommonServiceItemCreated = [3]string{
+var jsonFieldsNameOfCreateCommonServiceItemCreated = [1]string{
 	0: "CommonServiceItem",
-	1: "Success",
-	2: "is_ok",
 }
 
 // Decode decodes CreateCommonServiceItemCreated from json.
@@ -1231,26 +1217,6 @@ func (s *CreateCommonServiceItemCreated) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"CommonServiceItem\"")
-			}
-		case "Success":
-			if err := func() error {
-				s.Success.Reset()
-				if err := s.Success.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"Success\"")
-			}
-		case "is_ok":
-			if err := func() error {
-				s.IsOk.Reset()
-				if err := s.IsOk.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"is_ok\"")
 			}
 		default:
 			return d.Skip()
