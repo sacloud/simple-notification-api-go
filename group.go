@@ -17,7 +17,6 @@ package simplenotification
 import (
 	"context"
 	"errors"
-	"net/http"
 
 	v1 "github.com/sacloud/simple-notification-api-go/apis/v1"
 )
@@ -85,12 +84,7 @@ func (o *GroupOp) Create(ctx context.Context, groupname, description string, tag
 	if err != nil {
 		var e *v1.ErrorStatusCode
 		if errors.As(err, &e) {
-			switch e.StatusCode {
-			case http.StatusCreated:
-				return &res.CommonServiceItem, nil
-			default:
-				return nil, NewAPIError(methodName, e.StatusCode, err)
-			}
+			return nil, NewAPIError(methodName, e.StatusCode, err)
 		}
 		return nil, NewError(methodName, err)
 	}
