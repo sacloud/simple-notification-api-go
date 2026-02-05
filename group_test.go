@@ -22,6 +22,7 @@ import (
 	"github.com/sacloud/packages-go/testutil"
 	"github.com/sacloud/saclient-go"
 	simplenotification "github.com/sacloud/simple-notification-api-go"
+	"github.com/stretchr/testify/require"
 
 	v1 "github.com/sacloud/simple-notification-api-go/apis/v1"
 )
@@ -110,6 +111,9 @@ func TestGroupOp(t *testing.T) {
 		if resp == nil {
 			t.Fatal("expected response but got nil")
 		}
+		require.Equal(t, groupnameUpdate, resp.Name, "group name should be updated")
+		require.Equal(t, descriptionUpdate, resp.Description, "description should be updated")
+		require.Equal(t, tagsUpdate, resp.Tags, "tags should be updated")
 		t.Logf("GroupOp.Update response: %+v", resp)
 	})
 	t.Run("UpdateWithoutSetting", func(t *testing.T) {
@@ -123,6 +127,9 @@ func TestGroupOp(t *testing.T) {
 		if resp == nil {
 			t.Fatal("expected response but got nil")
 		}
+		require.Equal(t, groupnameUpdateWithoutsetting, resp.Name, "group name should be updated")
+		require.Equal(t, descriptionUpdateWithoutsetting, resp.Description, "description should be updated")
+		require.Equal(t, tagsUpdateWithoutsetting, resp.Tags, "tags should be updated")
 		t.Logf("GroupOp.UpdateWithoutSetting response: %+v", resp)
 	})
 	t.Run("SendMessage", func(t *testing.T) {
