@@ -49,8 +49,8 @@ func (s *CommonServiceItem) SetFake() {
 		}
 	}
 	{
-		{ // Keep pointer nil to prevent infinite recursion.
-			s.Icon = nil
+		{
+			s.Icon.SetFake()
 		}
 	}
 	{

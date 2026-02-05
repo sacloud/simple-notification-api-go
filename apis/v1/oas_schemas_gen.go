@@ -23,7 +23,7 @@ type CommonServiceItem struct {
 	CreatedAt   time.Time                 `json:"CreatedAt"`
 	ModifiedAt  time.Time                 `json:"ModifiedAt"`
 	Provider    CommonServiceItemProvider `json:"Provider"`
-	Icon        *CommonServiceItemIcon    `json:"Icon"`
+	Icon        CommonServiceItemIcon     `json:"Icon"`
 	Tags        []string                  `json:"Tags"`
 }
 
@@ -68,7 +68,7 @@ func (s *CommonServiceItem) GetProvider() CommonServiceItemProvider {
 }
 
 // GetIcon returns the value of Icon.
-func (s *CommonServiceItem) GetIcon() *CommonServiceItemIcon {
+func (s *CommonServiceItem) GetIcon() CommonServiceItemIcon {
 	return s.Icon
 }
 
@@ -118,7 +118,7 @@ func (s *CommonServiceItem) SetProvider(val CommonServiceItemProvider) {
 }
 
 // SetIcon sets the value of Icon.
-func (s *CommonServiceItem) SetIcon(val *CommonServiceItemIcon) {
+func (s *CommonServiceItem) SetIcon(val CommonServiceItemIcon) {
 	s.Icon = val
 }
 

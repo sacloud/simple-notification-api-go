@@ -57,11 +57,7 @@ func (s *CommonServiceItem) encodeFields(e *jx.Encoder) {
 	}
 	{
 		e.FieldStart("Icon")
-		if s.Icon == nil {
-			e.Null()
-		} else {
-			s.Icon.Encode(e)
-		}
+		s.Icon.Encode(e)
 	}
 	{
 		e.FieldStart("Tags")
@@ -188,12 +184,9 @@ func (s *CommonServiceItem) Decode(d *jx.Decoder) error {
 		case "Icon":
 			requiredBitSet[1] |= 1 << 0
 			if err := func() error {
-				s.Icon = nil
-				var elem CommonServiceItemIcon
-				if err := elem.Decode(d); err != nil {
+				if err := s.Icon.Decode(d); err != nil {
 					return err
 				}
-				s.Icon = &elem
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"Icon\"")
