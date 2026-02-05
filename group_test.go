@@ -26,10 +26,6 @@ import (
 	v1 "github.com/sacloud/simple-notification-api-go/apis/v1"
 )
 
-func getenv(key string) string {
-	return os.Getenv(key)
-}
-
 func groupAPISetup(t *testing.T) (ctx context.Context, api simplenotification.GroupAPI) {
 	testutil.PreCheckEnvsFunc("SAKURA_ACCESS_TOKEN", "SAKURA_ACCESS_TOKEN_SECRET", "DESTINATION_TEST_ID")(t)
 
