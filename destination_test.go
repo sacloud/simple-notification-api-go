@@ -18,7 +18,6 @@ import (
 	"context"
 	"os"
 	"testing"
-	"time"
 
 	"github.com/sacloud/packages-go/testutil"
 	"github.com/sacloud/saclient-go"
@@ -69,7 +68,7 @@ func TestDestinationOp(t *testing.T) {
 		if id != "" {
 			err := destinationAPI.Delete(ctx, id)
 			if err != nil {
-				t.Fatalf("unexpected error on cleanup: %v", err)
+				t.Errorf("unexpected error on cleanup: %v", err)
 			}
 			t.Log("DestinationOp.Delete succeeded on cleanup")
 		}
@@ -131,7 +130,6 @@ func TestDestinationOp(t *testing.T) {
 		require.Equal(t, tagsUpdateWithoutsetting, resp.Tags, "tags should be updated")
 		t.Logf("DestinationOp.UpdateWithoutSetting response: %+v", resp)
 	})
-	time.Sleep(3.0 * time.Second) // wait for eventual consistency
 	t.Run("GetStatus", func(t *testing.T) {
 		resp, err := destinationAPI.GetStatus(ctx, id)
 		if err != nil {
