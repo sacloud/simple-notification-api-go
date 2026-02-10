@@ -26,7 +26,7 @@ type Invoker interface {
 	// Class`の値に応じて必要な`Settings`の内容が異なります。.
 	//
 	// POST /commonserviceitem
-	CreateCommonServiceItem(ctx context.Context, request OptPostCommonServiceItemRequest) (*CreateCommonServiceItemOK, error)
+	CreateCommonServiceItem(ctx context.Context, request OptPostCommonServiceItemRequest) (*CreateCommonServiceItemCreated, error)
 	// DeleteCommonServiceItem invokes deleteCommonServiceItem operation.
 	//
 	// リソースの削除。.
@@ -69,6 +69,12 @@ type Invoker interface {
 	//
 	// GET /commonserviceitem/simplenotification/history
 	ListNotificationHistories(ctx context.Context) (*ListSimpleNotificationHistoriesResponse, error)
+	// ListSources invokes listSources operation.
+	//
+	// 通知ルーティングに設定する通知元の情報を取得します。.
+	//
+	// GET /commonserviceitem/simplenotification/sources
+	ListSources(ctx context.Context) (*ListSourcesResponse, error)
 	// ReorderRouting invokes reorderRouting operation.
 	//
 	// 通知ルーティングの優先順位を並び替えます。
@@ -136,12 +142,12 @@ func (c *Client) requestURL(ctx context.Context) *url.URL {
 // Class`の値に応じて必要な`Settings`の内容が異なります。.
 //
 // POST /commonserviceitem
-func (c *Client) CreateCommonServiceItem(ctx context.Context, request OptPostCommonServiceItemRequest) (*CreateCommonServiceItemOK, error) {
+func (c *Client) CreateCommonServiceItem(ctx context.Context, request OptPostCommonServiceItemRequest) (*CreateCommonServiceItemCreated, error) {
 	res, err := c.sendCreateCommonServiceItem(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendCreateCommonServiceItem(ctx context.Context, request OptPostCommonServiceItemRequest) (res *CreateCommonServiceItemOK, err error) {
+func (c *Client) sendCreateCommonServiceItem(ctx context.Context, request OptPostCommonServiceItemRequest) (res *CreateCommonServiceItemCreated, err error) {
 	// Validate request before sending.
 	if err := func() error {
 		if value, ok := request.Get(); ok {
@@ -474,6 +480,42 @@ func (c *Client) sendListNotificationHistories(ctx context.Context) (res *ListSi
 	defer resp.Body.Close()
 
 	result, err := decodeListNotificationHistoriesResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ListSources invokes listSources operation.
+//
+// 通知ルーティングに設定する通知元の情報を取得します。.
+//
+// GET /commonserviceitem/simplenotification/sources
+func (c *Client) ListSources(ctx context.Context) (*ListSourcesResponse, error) {
+	res, err := c.sendListSources(ctx)
+	return res, err
+}
+
+func (c *Client) sendListSources(ctx context.Context) (res *ListSourcesResponse, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/commonserviceitem/simplenotification/sources"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeListSourcesResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}

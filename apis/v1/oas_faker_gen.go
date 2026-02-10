@@ -186,7 +186,7 @@ func (s *CommonServiceItemSettings) SetFake() {
 }
 
 // SetFake set fake values.
-func (s *CreateCommonServiceItemOK) SetFake() {
+func (s *CreateCommonServiceItemCreated) SetFake() {
 	{
 		{
 			s.CommonServiceItem.SetFake()
@@ -316,6 +316,36 @@ func (s *ListSimpleNotificationHistoriesResponse) SetFake() {
 				}
 				s.NotificationHistories = append(s.NotificationHistories, elem)
 			}
+		}
+	}
+}
+
+// SetFake set fake values.
+func (s *ListSourcesResponse) SetFake() {
+	{
+		{
+			s.Sources = nil
+			for i := 0; i < 0; i++ {
+				var elem ListSourcesResponseSourcesItem
+				{
+					elem.SetFake()
+				}
+				s.Sources = append(s.Sources, elem)
+			}
+		}
+	}
+}
+
+// SetFake set fake values.
+func (s *ListSourcesResponseSourcesItem) SetFake() {
+	{
+		{
+			s.ID = "string"
+		}
+	}
+	{
+		{
+			s.Name = "string"
 		}
 	}
 }
@@ -547,6 +577,11 @@ func (s *PostCommonServiceItemRequestCommonServiceItem) SetFake() {
 	{
 		{
 			s.Icon.SetFake()
+		}
+	}
+	{
+		{
+			s.ServiceClass.SetFake()
 		}
 	}
 	{

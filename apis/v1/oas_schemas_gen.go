@@ -464,17 +464,17 @@ func NewCommonServiceItemRoutingSettingsCommonServiceItemSettings(v CommonServic
 	return s
 }
 
-type CreateCommonServiceItemOK struct {
+type CreateCommonServiceItemCreated struct {
 	CommonServiceItem CommonServiceItem `json:"CommonServiceItem"`
 }
 
 // GetCommonServiceItem returns the value of CommonServiceItem.
-func (s *CreateCommonServiceItemOK) GetCommonServiceItem() CommonServiceItem {
+func (s *CreateCommonServiceItemCreated) GetCommonServiceItem() CommonServiceItem {
 	return s.CommonServiceItem
 }
 
 // SetCommonServiceItem sets the value of CommonServiceItem.
-func (s *CreateCommonServiceItemOK) SetCommonServiceItem(val CommonServiceItem) {
+func (s *CreateCommonServiceItemCreated) SetCommonServiceItem(val CommonServiceItem) {
 	s.CommonServiceItem = val
 }
 
@@ -707,6 +707,46 @@ func (s *ListSimpleNotificationHistoriesResponse) GetNotificationHistories() []N
 // SetNotificationHistories sets the value of NotificationHistories.
 func (s *ListSimpleNotificationHistoriesResponse) SetNotificationHistories(val []NotificationHistory) {
 	s.NotificationHistories = val
+}
+
+// Ref: #/components/schemas/ListSourcesResponse
+type ListSourcesResponse struct {
+	Sources []ListSourcesResponseSourcesItem `json:"Sources"`
+}
+
+// GetSources returns the value of Sources.
+func (s *ListSourcesResponse) GetSources() []ListSourcesResponseSourcesItem {
+	return s.Sources
+}
+
+// SetSources sets the value of Sources.
+func (s *ListSourcesResponse) SetSources(val []ListSourcesResponseSourcesItem) {
+	s.Sources = val
+}
+
+type ListSourcesResponseSourcesItem struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+// GetID returns the value of ID.
+func (s *ListSourcesResponseSourcesItem) GetID() string {
+	return s.ID
+}
+
+// GetName returns the value of Name.
+func (s *ListSourcesResponseSourcesItem) GetName() string {
+	return s.Name
+}
+
+// SetID sets the value of ID.
+func (s *ListSourcesResponseSourcesItem) SetID(val string) {
+	s.ID = val
+}
+
+// SetName sets the value of Name.
+func (s *ListSourcesResponseSourcesItem) SetName(val string) {
+	s.Name = val
 }
 
 // Ref: #/components/schemas/NotificationHistory
@@ -1341,12 +1381,13 @@ func (s *PostCommonServiceItemRequest) SetCommonServiceItem(val PostCommonServic
 }
 
 type PostCommonServiceItemRequestCommonServiceItem struct {
-	Name        string                                                `json:"Name"`
-	Description string                                                `json:"Description"`
-	Tags        []string                                              `json:"Tags"`
-	Icon        PostCommonServiceItemRequestCommonServiceItemIcon     `json:"Icon"`
-	Provider    PostCommonServiceItemRequestCommonServiceItemProvider `json:"Provider"`
-	Settings    PostCommonServiceItemRequestCommonServiceItemSettings `json:"Settings"`
+	Name         string                                                `json:"Name"`
+	Description  string                                                `json:"Description"`
+	Tags         []string                                              `json:"Tags"`
+	Icon         PostCommonServiceItemRequestCommonServiceItemIcon     `json:"Icon"`
+	ServiceClass OptString                                             `json:"ServiceClass"`
+	Provider     PostCommonServiceItemRequestCommonServiceItemProvider `json:"Provider"`
+	Settings     PostCommonServiceItemRequestCommonServiceItemSettings `json:"Settings"`
 }
 
 // GetName returns the value of Name.
@@ -1367,6 +1408,11 @@ func (s *PostCommonServiceItemRequestCommonServiceItem) GetTags() []string {
 // GetIcon returns the value of Icon.
 func (s *PostCommonServiceItemRequestCommonServiceItem) GetIcon() PostCommonServiceItemRequestCommonServiceItemIcon {
 	return s.Icon
+}
+
+// GetServiceClass returns the value of ServiceClass.
+func (s *PostCommonServiceItemRequestCommonServiceItem) GetServiceClass() OptString {
+	return s.ServiceClass
 }
 
 // GetProvider returns the value of Provider.
@@ -1397,6 +1443,11 @@ func (s *PostCommonServiceItemRequestCommonServiceItem) SetTags(val []string) {
 // SetIcon sets the value of Icon.
 func (s *PostCommonServiceItemRequestCommonServiceItem) SetIcon(val PostCommonServiceItemRequestCommonServiceItemIcon) {
 	s.Icon = val
+}
+
+// SetServiceClass sets the value of ServiceClass.
+func (s *PostCommonServiceItemRequestCommonServiceItem) SetServiceClass(val OptString) {
+	s.ServiceClass = val
 }
 
 // SetProvider sets the value of Provider.
