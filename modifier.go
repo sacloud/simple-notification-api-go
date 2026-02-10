@@ -29,10 +29,10 @@ import (
 )
 
 const (
-	CommonServiceItemPath    = "commonserviceitem"
-	CommonServiceItemKey     = "CommonServiceItem"
-	CommonServiceItemListKey = "CommonServiceItems"
-	CommonServiceItemIconKey = "Icon"
+	commonServiceItemPath    = "commonserviceitem"
+	commonServiceItemKey     = "CommonServiceItem"
+	commonServiceItemListKey = "CommonServiceItems"
+	commonServiceItemIconKey = "Icon"
 )
 
 func modifiyMiddleware() saclient.Middleware {
@@ -58,7 +58,7 @@ func requestModifier(req *http.Request) error {
 	listpath := strings.TrimSuffix(req.URL.Path, "/")
 
 	// commonserviceitem list API , Provider.Class query param setting
-	if path.Base(listpath) == CommonServiceItemPath &&
+	if path.Base(listpath) == commonServiceItemPath &&
 		req.Method == http.MethodGet {
 		providerTarget, err := getContextProviderClass(req.Context())
 		if err != nil {
@@ -73,7 +73,7 @@ func requestModifier(req *http.Request) error {
 
 func responseModifier(req *http.Request, resp *http.Response) error {
 	// commonserviceitem　list and get check.
-	if !strings.Contains(req.URL.String(), CommonServiceItemPath) {
+	if !strings.Contains(req.URL.String(), commonServiceItemPath) {
 		return nil
 	}
 	body := resp.Body
@@ -126,27 +126,27 @@ func setJSONOnlyQuery(req *http.Request, providerClass v1.CommonServiceItemProvi
 func replaceIconNullWithCommonServiceItem(items map[string]interface{}) map[string]interface{} {
 	//  if Icon value is null , replace with empty object
 	replaceIcon := func(data map[string]interface{}) {
-		if v, ok := data[CommonServiceItemIconKey]; ok && v == nil {
-			data[CommonServiceItemIconKey] = map[string]interface{}{}
+		if v, ok := data[commonServiceItemIconKey]; ok && v == nil {
+			data[commonServiceItemIconKey] = map[string]interface{}{}
 		}
 	}
 
 	// case : List
-	if itemsList, ok := items[CommonServiceItemListKey].([]interface{}); ok {
+	if itemsList, ok := items[commonServiceItemListKey].([]interface{}); ok {
 		for i, item := range itemsList {
 			if data, ok := item.(map[string]interface{}); ok {
 				replaceIcon(data)
 				itemsList[i] = data
 			}
 		}
-		items[CommonServiceItemListKey] = itemsList
+		items[commonServiceItemListKey] = itemsList
 		return items
 	}
 
 	// case : default
-	if data, ok := items[CommonServiceItemKey].(map[string]interface{}); ok {
+	if data, ok := items[commonServiceItemKey].(map[string]interface{}); ok {
 		replaceIcon(data)
-		items[CommonServiceItemKey] = data
+		items[commonServiceItemKey] = data
 		return items
 	}
 	return items
