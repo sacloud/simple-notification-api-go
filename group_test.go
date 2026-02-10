@@ -50,7 +50,7 @@ func TestGroupOp(t *testing.T) {
 	groupname := "test-group-1"
 	description := "test-group-description"
 	tags := []string{"test"}
-	destinationID := os.Getenv("DESTINATION_TEST_ID")
+	destinationID := os.Getenv("SAKURA_DESTINATION_TEST_ID")
 	setting := v1.CommonServiceItemGroupSettings{
 		Destinations: []string{destinationID},
 	}
