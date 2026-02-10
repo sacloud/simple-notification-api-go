@@ -114,21 +114,21 @@ func TestDestinationOp(t *testing.T) {
 		require.Equal(t, tagsUpdate, resp.Tags, "tags should be updated")
 		t.Logf("DestinationOp.Update response: %+v", resp)
 	})
-	t.Run("UpdateWithoutSetting", func(t *testing.T) {
-		destNameUpdateWithoutsetting := "updated-destination-withoutsetting"
-		descriptionUpdateWithoutsetting := "updated-description-withoutsetting"
-		tagsUpdateWithoutsetting := []string{"updated-withoutsetting"}
-		resp, err := destinationAPI.Update(ctx, id, destNameUpdateWithoutsetting, descriptionUpdateWithoutsetting, tagsUpdateWithoutsetting, nil)
+	t.Run("UpdatewithoutSetting", func(t *testing.T) {
+		destNameUpdatewithoutSetting := "updated-destination-withoutSetting"
+		descriptionUpdatewithoutSetting := "updated-description-withoutSetting"
+		tagsUpdatewithoutSetting := []string{"updated-withoutSetting"}
+		resp, err := destinationAPI.Update(ctx, id, destNameUpdatewithoutSetting, descriptionUpdatewithoutSetting, tagsUpdatewithoutSetting, nil)
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
 		if resp == nil {
 			t.Fatal("expected response but got nil")
 		}
-		require.Equal(t, destNameUpdateWithoutsetting, resp.Name, "destination name should be updated")
-		require.Equal(t, descriptionUpdateWithoutsetting, resp.Description, "description should be updated")
-		require.Equal(t, tagsUpdateWithoutsetting, resp.Tags, "tags should be updated")
-		t.Logf("DestinationOp.UpdateWithoutSetting response: %+v", resp)
+		require.Equal(t, destNameUpdatewithoutSetting, resp.Name, "destination name should be updated")
+		require.Equal(t, descriptionUpdatewithoutSetting, resp.Description, "description should be updated")
+		require.Equal(t, tagsUpdatewithoutSetting, resp.Tags, "tags should be updated")
+		t.Logf("DestinationOp.UpdatewithoutSetting response: %+v", resp)
 	})
 	t.Run("GetStatus", func(t *testing.T) {
 		resp, err := destinationAPI.GetStatus(ctx, id)
