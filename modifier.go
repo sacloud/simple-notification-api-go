@@ -17,12 +17,14 @@ package simplenotification
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
 	"path"
 	"strconv"
 	"strings"
 
+	"github.com/sacloud/saclient-go"
 	v1 "github.com/sacloud/simple-notification-api-go/apis/v1"
 )
 
@@ -33,6 +35,25 @@ const (
 	CommonServiceItemIconKey = "Icon"
 )
 
+func ModifiyMiddleware() saclient.Middleware {
+	return func(req *http.Request, pull func() (saclient.Middleware, bool)) (*http.Response, error) {
+		if err := requestModifier(req); err != nil {
+			return nil, err
+		}
+		cont, ok := pull()
+		if !ok {
+			return nil, errors.New("middleware not found error")
+		}
+		resp, err := cont(req, pull)
+		if err != nil {
+			return nil, err
+		}
+		if err := responseModifier(req, resp); err != nil {
+			return nil, err
+		}
+		return resp, nil
+	}
+}
 func requestModifier(req *http.Request) error {
 	listpath := strings.TrimSuffix(req.URL.Path, "/")
 
