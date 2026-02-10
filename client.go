@@ -25,7 +25,7 @@ const (
 
 // NewClient creates a new simple-notification API client with default settings
 func NewClient(client *saclient.Client) (*v1.Client, error) {
-	err := client.SetWith(saclient.WithBigInt(false), saclient.WithMiddleware(ModifiyMiddleware()))
+	err := client.SetWith(saclient.WithBigInt(false), saclient.WithMiddleware(modifiyMiddleware()))
 	if err != nil {
 		return nil, err
 	}

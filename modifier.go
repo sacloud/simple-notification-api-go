@@ -35,7 +35,7 @@ const (
 	CommonServiceItemIconKey = "Icon"
 )
 
-func ModifiyMiddleware() saclient.Middleware {
+func modifiyMiddleware() saclient.Middleware {
 	return func(req *http.Request, pull func() (saclient.Middleware, bool)) (*http.Response, error) {
 		if err := requestModifier(req); err != nil {
 			return nil, err
