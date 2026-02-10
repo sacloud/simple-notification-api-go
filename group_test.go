@@ -28,7 +28,7 @@ import (
 )
 
 func groupAPISetup(t *testing.T) (ctx context.Context, api simplenotification.GroupAPI) {
-	testutil.PreCheckEnvsFunc("SAKURA_ACCESS_TOKEN", "SAKURA_ACCESS_TOKEN_SECRET", "DESTINATION_TEST_ID")(t)
+	testutil.PreCheckEnvsFunc("SAKURA_ACCESS_TOKEN", "SAKURA_ACCESS_TOKEN_SECRET", "SAKURA_DESTINATION_TEST_ID")(t)
 
 	ctx = t.Context()
 
