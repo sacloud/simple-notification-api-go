@@ -23,7 +23,7 @@ type CommonServiceItem struct {
 	CreatedAt   time.Time                 `json:"CreatedAt"`
 	ModifiedAt  time.Time                 `json:"ModifiedAt"`
 	Provider    CommonServiceItemProvider `json:"Provider"`
-	Icon        CommonServiceItemIcon     `json:"Icon"`
+	Icon        NilIcon                   `json:"Icon"`
 	Tags        []string                  `json:"Tags"`
 }
 
@@ -68,7 +68,7 @@ func (s *CommonServiceItem) GetProvider() CommonServiceItemProvider {
 }
 
 // GetIcon returns the value of Icon.
-func (s *CommonServiceItem) GetIcon() CommonServiceItemIcon {
+func (s *CommonServiceItem) GetIcon() NilIcon {
 	return s.Icon
 }
 
@@ -118,7 +118,7 @@ func (s *CommonServiceItem) SetProvider(val CommonServiceItemProvider) {
 }
 
 // SetIcon sets the value of Icon.
-func (s *CommonServiceItem) SetIcon(val CommonServiceItemIcon) {
+func (s *CommonServiceItem) SetIcon(val NilIcon) {
 	s.Icon = val
 }
 
@@ -230,8 +230,6 @@ func (s *CommonServiceItemGroupSettings) SetDestinations(val []string) {
 func (s *CommonServiceItemGroupSettings) SetDisabled(val OptBool) {
 	s.Disabled = val
 }
-
-type CommonServiceItemIcon struct{}
 
 type CommonServiceItemProvider struct {
 	Class CommonServiceItemProviderClass `json:"Class"`
@@ -646,6 +644,65 @@ func (s *GetSimpleNotificationHistoryResponse) SetNotificationHistory(val Notifi
 	s.NotificationHistory = val
 }
 
+// Ref: #/components/schemas/Icon
+type Icon struct {
+	ID    OptString `json:"ID"`
+	URL   OptString `json:"URL"`
+	Name  OptString `json:"Name"`
+	Scope OptString `json:"Scope"`
+	Tags  []string  `json:"Tags"`
+}
+
+// GetID returns the value of ID.
+func (s *Icon) GetID() OptString {
+	return s.ID
+}
+
+// GetURL returns the value of URL.
+func (s *Icon) GetURL() OptString {
+	return s.URL
+}
+
+// GetName returns the value of Name.
+func (s *Icon) GetName() OptString {
+	return s.Name
+}
+
+// GetScope returns the value of Scope.
+func (s *Icon) GetScope() OptString {
+	return s.Scope
+}
+
+// GetTags returns the value of Tags.
+func (s *Icon) GetTags() []string {
+	return s.Tags
+}
+
+// SetID sets the value of ID.
+func (s *Icon) SetID(val OptString) {
+	s.ID = val
+}
+
+// SetURL sets the value of URL.
+func (s *Icon) SetURL(val OptString) {
+	s.URL = val
+}
+
+// SetName sets the value of Name.
+func (s *Icon) SetName(val OptString) {
+	s.Name = val
+}
+
+// SetScope sets the value of Scope.
+func (s *Icon) SetScope(val OptString) {
+	s.Scope = val
+}
+
+// SetTags sets the value of Tags.
+func (s *Icon) SetTags(val []string) {
+	s.Tags = val
+}
+
 // Ref: #/components/schemas/ListCommonServiceItemsResponse
 type ListCommonServiceItemsResponse struct {
 	From               OptInt              `json:"From"`
@@ -747,6 +804,51 @@ func (s *ListSourcesResponseSourcesItem) SetID(val string) {
 // SetName sets the value of Name.
 func (s *ListSourcesResponseSourcesItem) SetName(val string) {
 	s.Name = val
+}
+
+// NewNilIcon returns new NilIcon with value set to v.
+func NewNilIcon(v Icon) NilIcon {
+	return NilIcon{
+		Value: v,
+	}
+}
+
+// NilIcon is nullable Icon.
+type NilIcon struct {
+	Value Icon
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilIcon) SetTo(v Icon) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilIcon) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilIcon) SetToNull() {
+	o.Null = true
+	var v Icon
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilIcon) Get() (v Icon, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilIcon) Or(d Icon) Icon {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
 }
 
 // Ref: #/components/schemas/NotificationHistory
@@ -1227,52 +1329,6 @@ func (o OptPutCommonServiceItemRequestCommonServiceItemSettings) Or(d PutCommonS
 	return d
 }
 
-// NewOptPutCommonServiceItemRoutingReorderRequest returns new OptPutCommonServiceItemRoutingReorderRequest with value set to v.
-func NewOptPutCommonServiceItemRoutingReorderRequest(v PutCommonServiceItemRoutingReorderRequest) OptPutCommonServiceItemRoutingReorderRequest {
-	return OptPutCommonServiceItemRoutingReorderRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptPutCommonServiceItemRoutingReorderRequest is optional PutCommonServiceItemRoutingReorderRequest.
-type OptPutCommonServiceItemRoutingReorderRequest struct {
-	Value PutCommonServiceItemRoutingReorderRequest
-	Set   bool
-}
-
-// IsSet returns true if OptPutCommonServiceItemRoutingReorderRequest was set.
-func (o OptPutCommonServiceItemRoutingReorderRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptPutCommonServiceItemRoutingReorderRequest) Reset() {
-	var v PutCommonServiceItemRoutingReorderRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptPutCommonServiceItemRoutingReorderRequest) SetTo(v PutCommonServiceItemRoutingReorderRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptPutCommonServiceItemRoutingReorderRequest) Get() (v PutCommonServiceItemRoutingReorderRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptPutCommonServiceItemRoutingReorderRequest) Or(d PutCommonServiceItemRoutingReorderRequest) PutCommonServiceItemRoutingReorderRequest {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptSendNotificationMessageRequest returns new OptSendNotificationMessageRequest with value set to v.
 func NewOptSendNotificationMessageRequest(v SendNotificationMessageRequest) OptSendNotificationMessageRequest {
 	return OptSendNotificationMessageRequest{
@@ -1384,7 +1440,7 @@ type PostCommonServiceItemRequestCommonServiceItem struct {
 	Name         string                                                `json:"Name"`
 	Description  string                                                `json:"Description"`
 	Tags         []string                                              `json:"Tags"`
-	Icon         PostCommonServiceItemRequestCommonServiceItemIcon     `json:"Icon"`
+	Icon         NilIcon                                               `json:"Icon"`
 	ServiceClass OptString                                             `json:"ServiceClass"`
 	Provider     PostCommonServiceItemRequestCommonServiceItemProvider `json:"Provider"`
 	Settings     PostCommonServiceItemRequestCommonServiceItemSettings `json:"Settings"`
@@ -1406,7 +1462,7 @@ func (s *PostCommonServiceItemRequestCommonServiceItem) GetTags() []string {
 }
 
 // GetIcon returns the value of Icon.
-func (s *PostCommonServiceItemRequestCommonServiceItem) GetIcon() PostCommonServiceItemRequestCommonServiceItemIcon {
+func (s *PostCommonServiceItemRequestCommonServiceItem) GetIcon() NilIcon {
 	return s.Icon
 }
 
@@ -1441,7 +1497,7 @@ func (s *PostCommonServiceItemRequestCommonServiceItem) SetTags(val []string) {
 }
 
 // SetIcon sets the value of Icon.
-func (s *PostCommonServiceItemRequestCommonServiceItem) SetIcon(val PostCommonServiceItemRequestCommonServiceItemIcon) {
+func (s *PostCommonServiceItemRequestCommonServiceItem) SetIcon(val NilIcon) {
 	s.Icon = val
 }
 
@@ -1459,8 +1515,6 @@ func (s *PostCommonServiceItemRequestCommonServiceItem) SetProvider(val PostComm
 func (s *PostCommonServiceItemRequestCommonServiceItem) SetSettings(val PostCommonServiceItemRequestCommonServiceItemSettings) {
 	s.Settings = val
 }
-
-type PostCommonServiceItemRequestCommonServiceItemIcon struct{}
 
 type PostCommonServiceItemRequestCommonServiceItemProvider struct {
 	Class        PostCommonServiceItemRequestCommonServiceItemProviderClass `json:"Class"`
@@ -1661,7 +1715,7 @@ type PutCommonServiceItemRequestCommonServiceItem struct {
 	Name        string                                                  `json:"Name"`
 	Description string                                                  `json:"Description"`
 	Tags        []string                                                `json:"Tags"`
-	Icon        PutCommonServiceItemRequestCommonServiceItemIcon        `json:"Icon"`
+	Icon        NilIcon                                                 `json:"Icon"`
 	Settings    OptPutCommonServiceItemRequestCommonServiceItemSettings `json:"Settings"`
 }
 
@@ -1681,7 +1735,7 @@ func (s *PutCommonServiceItemRequestCommonServiceItem) GetTags() []string {
 }
 
 // GetIcon returns the value of Icon.
-func (s *PutCommonServiceItemRequestCommonServiceItem) GetIcon() PutCommonServiceItemRequestCommonServiceItemIcon {
+func (s *PutCommonServiceItemRequestCommonServiceItem) GetIcon() NilIcon {
 	return s.Icon
 }
 
@@ -1706,7 +1760,7 @@ func (s *PutCommonServiceItemRequestCommonServiceItem) SetTags(val []string) {
 }
 
 // SetIcon sets the value of Icon.
-func (s *PutCommonServiceItemRequestCommonServiceItem) SetIcon(val PutCommonServiceItemRequestCommonServiceItemIcon) {
+func (s *PutCommonServiceItemRequestCommonServiceItem) SetIcon(val NilIcon) {
 	s.Icon = val
 }
 
@@ -1714,8 +1768,6 @@ func (s *PutCommonServiceItemRequestCommonServiceItem) SetIcon(val PutCommonServ
 func (s *PutCommonServiceItemRequestCommonServiceItem) SetSettings(val OptPutCommonServiceItemRequestCommonServiceItemSettings) {
 	s.Settings = val
 }
-
-type PutCommonServiceItemRequestCommonServiceItemIcon struct{}
 
 // PutCommonServiceItemRequestCommonServiceItemSettings represents sum type.
 type PutCommonServiceItemRequestCommonServiceItemSettings struct {

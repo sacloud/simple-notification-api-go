@@ -113,10 +113,6 @@ func (s *CommonServiceItemGroupSettings) SetFake() {
 }
 
 // SetFake set fake values.
-func (s *CommonServiceItemIcon) SetFake() {
-}
-
-// SetFake set fake values.
 func (s *CommonServiceItemProvider) SetFake() {
 	{
 		{
@@ -274,6 +270,42 @@ func (s *GetSimpleNotificationHistoryResponse) SetFake() {
 }
 
 // SetFake set fake values.
+func (s *Icon) SetFake() {
+	{
+		{
+			s.ID.SetFake()
+		}
+	}
+	{
+		{
+			s.URL.SetFake()
+		}
+	}
+	{
+		{
+			s.Name.SetFake()
+		}
+	}
+	{
+		{
+			s.Scope.SetFake()
+		}
+	}
+	{
+		{
+			s.Tags = nil
+			for i := 0; i < 0; i++ {
+				var elem string
+				{
+					elem = "string"
+				}
+				s.Tags = append(s.Tags, elem)
+			}
+		}
+	}
+}
+
+// SetFake set fake values.
 func (s *ListCommonServiceItemsResponse) SetFake() {
 	{
 		{
@@ -348,6 +380,11 @@ func (s *ListSourcesResponseSourcesItem) SetFake() {
 			s.Name = "string"
 		}
 	}
+}
+
+// SetFake set fake values.
+func (s *NilIcon) SetFake() {
+	s.Null = true
 }
 
 // SetFake set fake values.
@@ -515,15 +552,6 @@ func (s *OptPutCommonServiceItemRequestCommonServiceItemSettings) SetFake() {
 }
 
 // SetFake set fake values.
-func (s *OptPutCommonServiceItemRoutingReorderRequest) SetFake() {
-	var elem PutCommonServiceItemRoutingReorderRequest
-	{
-		elem.SetFake()
-	}
-	s.SetTo(elem)
-}
-
-// SetFake set fake values.
 func (s *OptSendNotificationMessageRequest) SetFake() {
 	var elem SendNotificationMessageRequest
 	{
@@ -594,10 +622,6 @@ func (s *PostCommonServiceItemRequestCommonServiceItem) SetFake() {
 			s.Settings.SetFake()
 		}
 	}
-}
-
-// SetFake set fake values.
-func (s *PostCommonServiceItemRequestCommonServiceItemIcon) SetFake() {
 }
 
 // SetFake set fake values.
@@ -677,10 +701,6 @@ func (s *PutCommonServiceItemRequestCommonServiceItem) SetFake() {
 			s.Settings.SetFake()
 		}
 	}
-}
-
-// SetFake set fake values.
-func (s *PutCommonServiceItemRequestCommonServiceItemIcon) SetFake() {
 }
 
 // SetFake set fake values.
