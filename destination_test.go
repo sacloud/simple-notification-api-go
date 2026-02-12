@@ -54,7 +54,26 @@ func TestDestinationOp(t *testing.T) {
 		Value: mailAddress,
 	}
 	result := t.Run("Create", func(t *testing.T) {
-		resp, err := destinationAPI.Create(ctx, destName, description, tags, setting)
+		request := v1.PostCommonServiceItemRequest{
+			CommonServiceItem: v1.PostCommonServiceItemRequestCommonServiceItem{
+				Name:        destName,
+				Description: description,
+				Tags:        tags,
+				Icon: v1.NilIcon{
+					Null: false,
+					Value: v1.Icon{
+						ID: v1.OptString{
+							Set:   true,
+							Value: "112901627732", //Debian icon ID
+						},
+					},
+				},
+				Settings: v1.PostCommonServiceItemRequestCommonServiceItemSettings{
+					CommonServiceItemDestinationSettings: setting,
+				},
+			},
+		}
+		resp, err := destinationAPI.Create(ctx, request)
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
@@ -62,7 +81,7 @@ func TestDestinationOp(t *testing.T) {
 			t.Fatal("expected response but got nil")
 		}
 		t.Logf("DestinationOp.Create response: %+v", resp)
-		id = resp.ID
+		id = resp.CommonServiceItem.ID
 	})
 	defer func() {
 		if id != "" {
@@ -102,32 +121,61 @@ func TestDestinationOp(t *testing.T) {
 		destNameUpdate := "updated-destination"
 		descriptionUpdate := "updated-description"
 		tagsUpdate := []string{"updated"}
-		resp, err := destinationAPI.Update(ctx, id, destNameUpdate, descriptionUpdate, tagsUpdate, &setting)
+
+		request := v1.PutCommonServiceItemRequest{
+			CommonServiceItem: v1.PutCommonServiceItemRequestCommonServiceItem{
+				Name:        destNameUpdate,
+				Description: descriptionUpdate,
+				Tags:        tagsUpdate,
+				Settings: v1.OptPutCommonServiceItemRequestCommonServiceItemSettings{
+					Set: true,
+					Value: v1.PutCommonServiceItemRequestCommonServiceItemSettings{
+						Type: v1.CommonServiceItemDestinationSettingsPutCommonServiceItemRequestCommonServiceItemSettings,
+						CommonServiceItemDestinationSettings: v1.CommonServiceItemDestinationSettings{
+							Type:  v1.CommonServiceItemDestinationSettingsTypeEmail,
+							Value: mailAddress,
+						},
+					},
+				},
+			},
+		}
+		resp, err := destinationAPI.Update(ctx, id, request)
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
 		if resp == nil {
 			t.Fatal("expected response but got nil")
 		}
-		require.Equal(t, destNameUpdate, resp.Name, "destination name should be updated")
-		require.Equal(t, descriptionUpdate, resp.Description, "description should be updated")
-		require.Equal(t, tagsUpdate, resp.Tags, "tags should be updated")
+		require.Equal(t, destNameUpdate, resp.CommonServiceItem.Name, "destination name should be updated")
+		require.Equal(t, descriptionUpdate, resp.CommonServiceItem.Description, "description should be updated")
+		require.Equal(t, tagsUpdate, resp.CommonServiceItem.Tags, "tags should be updated")
 		t.Logf("DestinationOp.Update response: %+v", resp)
 	})
 	t.Run("UpdatewithoutSetting", func(t *testing.T) {
-		destNameUpdatewithoutSetting := "updated-destination-withoutSetting"
-		descriptionUpdatewithoutSetting := "updated-description-withoutSetting"
-		tagsUpdatewithoutSetting := []string{"updated-withoutSetting"}
-		resp, err := destinationAPI.Update(ctx, id, destNameUpdatewithoutSetting, descriptionUpdatewithoutSetting, tagsUpdatewithoutSetting, nil)
+		destNameUpdateWithoutSetting := "updated-destination-withoutSetting"
+		descriptionUpdateWithoutSetting := "updated-description-withoutSetting"
+		tagsUpdateWithoutSetting := []string{"updated-withoutSetting"}
+
+		request := v1.PutCommonServiceItemRequest{
+			CommonServiceItem: v1.PutCommonServiceItemRequestCommonServiceItem{
+				Name:        destNameUpdateWithoutSetting,
+				Description: descriptionUpdateWithoutSetting,
+				Tags:        tagsUpdateWithoutSetting,
+				Settings: v1.OptPutCommonServiceItemRequestCommonServiceItemSettings{
+					Set: false,
+				},
+			},
+		}
+		resp, err := destinationAPI.Update(ctx, id, request)
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
 		if resp == nil {
 			t.Fatal("expected response but got nil")
 		}
-		require.Equal(t, destNameUpdatewithoutSetting, resp.Name, "destination name should be updated")
-		require.Equal(t, descriptionUpdatewithoutSetting, resp.Description, "description should be updated")
-		require.Equal(t, tagsUpdatewithoutSetting, resp.Tags, "tags should be updated")
+		require.Equal(t, destNameUpdateWithoutSetting, resp.CommonServiceItem.Name, "destination name should be updated")
+		require.Equal(t, descriptionUpdateWithoutSetting, resp.CommonServiceItem.Description, "description should be updated")
+		require.Equal(t, tagsUpdateWithoutSetting, resp.CommonServiceItem.Tags, "tags should be updated")
 		t.Logf("DestinationOp.UpdatewithoutSetting response: %+v", resp)
 	})
 	t.Run("GetStatus", func(t *testing.T) {

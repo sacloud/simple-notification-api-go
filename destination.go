@@ -23,13 +23,11 @@ import (
 
 type DestinationAPI interface {
 	List(ctx context.Context) (*v1.ListCommonServiceItemsResponse, error)
-	Create(ctx context.Context, destName, description string, tags []string,
-		setting v1.CommonServiceItemDestinationSettings) (*v1.CommonServiceItem, error)
-	Read(ctx context.Context, id string) (*v1.CommonServiceItem, error)
-	Update(ctx context.Context, id, destName, description string, tags []string,
-		optSetting *v1.CommonServiceItemDestinationSettings) (*v1.CommonServiceItem, error)
+	Create(ctx context.Context, request v1.PostCommonServiceItemRequest) (*v1.CreateCommonServiceItemCreated, error)
+	Read(ctx context.Context, id string) (*v1.GetCommonServiceItemOK, error)
+	Update(ctx context.Context, id string, request v1.PutCommonServiceItemRequest) (*v1.UpdateCommonServiceItemOK, error)
 	Delete(ctx context.Context, id string) error
-	GetStatus(ctx context.Context, id string) (*v1.GetCommonServiceItemStatusResponseNotificationStatus, error)
+	GetStatus(ctx context.Context, id string) (*v1.GetCommonServiceItemStatusResponse, error)
 }
 
 var _ DestinationAPI = (*DestinationOp)(nil)
@@ -56,24 +54,11 @@ func (o *DestinationOp) List(ctx context.Context) (*v1.ListCommonServiceItemsRes
 	return res, nil
 }
 
-func (o *DestinationOp) Create(ctx context.Context, destName, description string, tags []string,
-	setting v1.CommonServiceItemDestinationSettings) (*v1.CommonServiceItem, error) {
+func (o *DestinationOp) Create(ctx context.Context, request v1.PostCommonServiceItemRequest) (*v1.CreateCommonServiceItemCreated, error) {
 	const methodName = "Destination.Create"
-	req := v1.PostCommonServiceItemRequest{
-		CommonServiceItem: v1.PostCommonServiceItemRequestCommonServiceItem{
-			Name:        destName,
-			Description: description,
-			Tags:        tags,
-			Provider: v1.PostCommonServiceItemRequestCommonServiceItemProvider{
-				Class: v1.PostCommonServiceItemRequestCommonServiceItemProviderClassSaknoticedestination,
-			},
-			Settings: v1.PostCommonServiceItemRequestCommonServiceItemSettings{
-				Type:                                 v1.CommonServiceItemDestinationSettingsPostCommonServiceItemRequestCommonServiceItemSettings,
-				CommonServiceItemDestinationSettings: setting,
-			},
-		},
-	}
-	res, err := o.client.CreateCommonServiceItem(ctx, v1.OptPostCommonServiceItemRequest{Value: req, Set: true})
+	request.CommonServiceItem.Provider.Class = v1.PostCommonServiceItemRequestCommonServiceItemProviderClassSaknoticedestination
+	request.CommonServiceItem.Settings.Type = v1.CommonServiceItemDestinationSettingsPostCommonServiceItemRequestCommonServiceItemSettings
+	res, err := o.client.CreateCommonServiceItem(ctx, v1.OptPostCommonServiceItemRequest{Value: request, Set: true})
 	if err != nil {
 		var e *v1.ErrorStatusCode
 		if errors.As(err, &e) {
@@ -81,10 +66,10 @@ func (o *DestinationOp) Create(ctx context.Context, destName, description string
 		}
 		return nil, NewError(methodName, err)
 	}
-	return &res.CommonServiceItem, nil
+	return res, nil
 }
 
-func (o *DestinationOp) Read(ctx context.Context, id string) (*v1.CommonServiceItem, error) {
+func (o *DestinationOp) Read(ctx context.Context, id string) (*v1.GetCommonServiceItemOK, error) {
 	const methodName = "Destination.Read"
 	res, err := o.client.GetCommonServiceItem(ctx, v1.GetCommonServiceItemParams{ID: id})
 	if err != nil {
@@ -94,34 +79,13 @@ func (o *DestinationOp) Read(ctx context.Context, id string) (*v1.CommonServiceI
 		}
 		return nil, NewError(methodName, err)
 	}
-	return &res.CommonServiceItem, nil
+	return res, nil
 }
 
-func (o *DestinationOp) Update(ctx context.Context, id, destName, description string, tags []string,
-	optSetting *v1.CommonServiceItemDestinationSettings) (*v1.CommonServiceItem, error) {
+func (o *DestinationOp) Update(ctx context.Context, id string, request v1.PutCommonServiceItemRequest) (*v1.UpdateCommonServiceItemOK, error) {
 	const methodName = "Destination.Update"
-	setting := v1.CommonServiceItemDestinationSettings{}
-	set := false
-
-	if optSetting != nil {
-		setting = *optSetting
-		set = true
-	}
-	req := v1.PutCommonServiceItemRequest{
-		CommonServiceItem: v1.PutCommonServiceItemRequestCommonServiceItem{
-			Name:        destName,
-			Description: description,
-			Tags:        tags,
-			Settings: v1.OptPutCommonServiceItemRequestCommonServiceItemSettings{
-				Set: set,
-				Value: v1.PutCommonServiceItemRequestCommonServiceItemSettings{
-					Type:                                 v1.CommonServiceItemDestinationSettingsPutCommonServiceItemRequestCommonServiceItemSettings,
-					CommonServiceItemDestinationSettings: setting,
-				},
-			},
-		},
-	}
-	res, err := o.client.UpdateCommonServiceItem(ctx, v1.OptPutCommonServiceItemRequest{Value: req, Set: true}, v1.UpdateCommonServiceItemParams{ID: id})
+	request.CommonServiceItem.Settings.Value.Type = v1.CommonServiceItemDestinationSettingsPutCommonServiceItemRequestCommonServiceItemSettings
+	res, err := o.client.UpdateCommonServiceItem(ctx, v1.OptPutCommonServiceItemRequest{Value: request, Set: true}, v1.UpdateCommonServiceItemParams{ID: id})
 	if err != nil {
 		var e *v1.ErrorStatusCode
 		if errors.As(err, &e) {
@@ -129,7 +93,7 @@ func (o *DestinationOp) Update(ctx context.Context, id, destName, description st
 		}
 		return nil, NewError(methodName, err)
 	}
-	return &res.CommonServiceItem, nil
+	return res, nil
 }
 
 func (o *DestinationOp) Delete(ctx context.Context, id string) error {
@@ -145,7 +109,7 @@ func (o *DestinationOp) Delete(ctx context.Context, id string) error {
 	return nil
 }
 
-func (o *DestinationOp) GetStatus(ctx context.Context, id string) (*v1.GetCommonServiceItemStatusResponseNotificationStatus, error) {
+func (o *DestinationOp) GetStatus(ctx context.Context, id string) (*v1.GetCommonServiceItemStatusResponse, error) {
 	const methodName = "Destination.GetStatus"
 	res, err := o.client.GetCommonServiceItemStatus(ctx, v1.GetCommonServiceItemStatusParams{ID: id})
 	if err != nil {
@@ -155,5 +119,5 @@ func (o *DestinationOp) GetStatus(ctx context.Context, id string) (*v1.GetCommon
 		}
 		return nil, NewError(methodName, err)
 	}
-	return &res.NotificationStatus, nil
+	return res, nil
 }
