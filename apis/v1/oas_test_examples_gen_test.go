@@ -63,18 +63,6 @@ func TestCommonServiceItemGroupSettings_EncodeDecode(t *testing.T) {
 	var typ2 CommonServiceItemGroupSettings
 	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
 }
-func TestCommonServiceItemIcon_EncodeDecode(t *testing.T) {
-	var typ CommonServiceItemIcon
-	typ.SetFake()
-
-	e := jx.Encoder{}
-	typ.Encode(&e)
-	data := e.Bytes()
-	require.True(t, std.Valid(data), "Encoded: %s", data)
-
-	var typ2 CommonServiceItemIcon
-	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
-}
 func TestCommonServiceItemProvider_EncodeDecode(t *testing.T) {
 	var typ CommonServiceItemProvider
 	typ.SetFake()
@@ -278,6 +266,18 @@ func TestGetSimpleNotificationHistoryResponse_Examples(t *testing.T) {
 			require.NoError(t, typ2.Decode(jx.DecodeBytes(e.Bytes())))
 		})
 	}
+}
+func TestIcon_EncodeDecode(t *testing.T) {
+	var typ Icon
+	typ.SetFake()
+
+	e := jx.Encoder{}
+	typ.Encode(&e)
+	data := e.Bytes()
+	require.True(t, std.Valid(data), "Encoded: %s", data)
+
+	var typ2 Icon
+	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
 }
 func TestListCommonServiceItemsResponse_EncodeDecode(t *testing.T) {
 	var typ ListCommonServiceItemsResponse
@@ -490,18 +490,6 @@ func TestPostCommonServiceItemRequestCommonServiceItem_EncodeDecode(t *testing.T
 	var typ2 PostCommonServiceItemRequestCommonServiceItem
 	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
 }
-func TestPostCommonServiceItemRequestCommonServiceItemIcon_EncodeDecode(t *testing.T) {
-	var typ PostCommonServiceItemRequestCommonServiceItemIcon
-	typ.SetFake()
-
-	e := jx.Encoder{}
-	typ.Encode(&e)
-	data := e.Bytes()
-	require.True(t, std.Valid(data), "Encoded: %s", data)
-
-	var typ2 PostCommonServiceItemRequestCommonServiceItemIcon
-	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
-}
 func TestPostCommonServiceItemRequestCommonServiceItemProvider_EncodeDecode(t *testing.T) {
 	var typ PostCommonServiceItemRequestCommonServiceItemProvider
 	typ.SetFake()
@@ -591,18 +579,6 @@ func TestPutCommonServiceItemRequestCommonServiceItem_EncodeDecode(t *testing.T)
 	require.True(t, std.Valid(data), "Encoded: %s", data)
 
 	var typ2 PutCommonServiceItemRequestCommonServiceItem
-	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
-}
-func TestPutCommonServiceItemRequestCommonServiceItemIcon_EncodeDecode(t *testing.T) {
-	var typ PutCommonServiceItemRequestCommonServiceItemIcon
-	typ.SetFake()
-
-	e := jx.Encoder{}
-	typ.Encode(&e)
-	data := e.Bytes()
-	require.True(t, std.Valid(data), "Encoded: %s", data)
-
-	var typ2 PutCommonServiceItemRequestCommonServiceItemIcon
 	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
 }
 func TestPutCommonServiceItemRequestCommonServiceItemSettings_EncodeDecode(t *testing.T) {
