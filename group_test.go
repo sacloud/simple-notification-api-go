@@ -51,12 +51,22 @@ func TestGroupOp(t *testing.T) {
 	description := "test-group-description"
 	tags := []string{"test"}
 	destinationID := os.Getenv("SAKURA_DESTINATION_TEST_ID")
-	setting := v1.CommonServiceItemGroupSettings{
-		Destinations: []string{destinationID},
-	}
 
 	result := t.Run("Create", func(t *testing.T) {
-		resp, err := groupAPI.Create(ctx, groupname, description, tags, setting)
+		request := v1.PostCommonServiceItemRequest{
+			CommonServiceItem: v1.PostCommonServiceItemRequestCommonServiceItem{
+				Name:        groupname,
+				Description: description,
+				Tags:        tags,
+				Settings: v1.PostCommonServiceItemRequestCommonServiceItemSettings{
+					Type: v1.CommonServiceItemGroupSettingsPostCommonServiceItemRequestCommonServiceItemSettings,
+					CommonServiceItemGroupSettings: v1.CommonServiceItemGroupSettings{
+						Destinations: []string{destinationID},
+					},
+				},
+			},
+		}
+		resp, err := groupAPI.Create(ctx, request)
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
@@ -64,7 +74,7 @@ func TestGroupOp(t *testing.T) {
 			t.Fatal("expected response but got nil")
 		}
 		t.Logf("GroupOp.Create response: %+v", resp)
-		id = resp.ID
+		id = resp.CommonServiceItem.ID
 	})
 	defer func() {
 		if id != "" {
@@ -104,33 +114,60 @@ func TestGroupOp(t *testing.T) {
 		groupnameUpdate := "updated-group"
 		descriptionUpdate := "updated-description"
 		tagsUpdate := []string{"updated"}
-		resp, err := groupAPI.Update(ctx, id, groupnameUpdate, descriptionUpdate, tagsUpdate, &setting)
+		request := v1.PutCommonServiceItemRequest{
+			CommonServiceItem: v1.PutCommonServiceItemRequestCommonServiceItem{
+				Name:        groupnameUpdate,
+				Description: descriptionUpdate,
+				Tags:        tagsUpdate,
+				Settings: v1.OptPutCommonServiceItemRequestCommonServiceItemSettings{
+					Set: true,
+					Value: v1.PutCommonServiceItemRequestCommonServiceItemSettings{
+						Type: v1.CommonServiceItemGroupSettingsPutCommonServiceItemRequestCommonServiceItemSettings,
+						CommonServiceItemGroupSettings: v1.CommonServiceItemGroupSettings{
+							Destinations: []string{destinationID},
+						},
+					},
+				},
+			},
+		}
+		resp, err := groupAPI.Update(ctx, id, request)
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
 		if resp == nil {
 			t.Fatal("expected response but got nil")
 		}
-		require.Equal(t, groupnameUpdate, resp.Name, "group name should be updated")
-		require.Equal(t, descriptionUpdate, resp.Description, "description should be updated")
-		require.Equal(t, tagsUpdate, resp.Tags, "tags should be updated")
+		require.Equal(t, groupnameUpdate, resp.CommonServiceItem.Name, "group name should be updated")
+		require.Equal(t, descriptionUpdate, resp.CommonServiceItem.Description, "description should be updated")
+		require.Equal(t, tagsUpdate, resp.CommonServiceItem.Tags, "tags should be updated")
 		t.Logf("GroupOp.Update response: %+v", resp)
 	})
-	t.Run("UpdateWithoutSetting", func(t *testing.T) {
-		groupnameUpdateWithoutsetting := "updated-group-withoutsetting"
-		descriptionUpdateWithoutsetting := "updated-description-withoutsetting"
-		tagsUpdateWithoutsetting := []string{"updated-withoutsetting"}
-		resp, err := groupAPI.Update(ctx, id, groupnameUpdateWithoutsetting, descriptionUpdateWithoutsetting, tagsUpdateWithoutsetting, nil)
+	t.Run("UpdatewithoutSetting", func(t *testing.T) {
+		groupnameUpdatewithoutSetting := "updated-group-withoutSetting"
+		descriptionUpdatewithoutSetting := "updated-description-withoutSetting"
+		tagsUpdatewithoutSetting := []string{"updated-withoutSetting"}
+
+		request := v1.PutCommonServiceItemRequest{
+			CommonServiceItem: v1.PutCommonServiceItemRequestCommonServiceItem{
+				Name:        groupnameUpdatewithoutSetting,
+				Description: descriptionUpdatewithoutSetting,
+				Tags:        tagsUpdatewithoutSetting,
+				Settings: v1.OptPutCommonServiceItemRequestCommonServiceItemSettings{
+					Set: false,
+				},
+			},
+		}
+		resp, err := groupAPI.Update(ctx, id, request)
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
 		if resp == nil {
 			t.Fatal("expected response but got nil")
 		}
-		require.Equal(t, groupnameUpdateWithoutsetting, resp.Name, "group name should be updated")
-		require.Equal(t, descriptionUpdateWithoutsetting, resp.Description, "description should be updated")
-		require.Equal(t, tagsUpdateWithoutsetting, resp.Tags, "tags should be updated")
-		t.Logf("GroupOp.UpdateWithoutSetting response: %+v", resp)
+		require.Equal(t, groupnameUpdatewithoutSetting, resp.CommonServiceItem.Name, "group name should be updated")
+		require.Equal(t, descriptionUpdatewithoutSetting, resp.CommonServiceItem.Description, "description should be updated")
+		require.Equal(t, tagsUpdatewithoutSetting, resp.CommonServiceItem.Tags, "tags should be updated")
+		t.Logf("GroupOp.UpdatewithoutSetting response: %+v", resp)
 	})
 	t.Run("SendMessage", func(t *testing.T) {
 		request := v1.SendNotificationMessageRequest{
