@@ -60,7 +60,10 @@ func TestRoutingOp(t *testing.T) {
 		},
 		SourceID:      testSourceID,
 		TargetGroupID: testTargetGroupID,
-		PriorityRank:  5,
+		// Although it is necessary to set PriorityRank,
+		// PriorityRank is determined from the routing information set on the service side.
+		// If you set PriorityRank, use Reorder API to change the order after creation.
+		PriorityRank: 1,
 	}
 	result := t.Run("Create", func(t *testing.T) {
 		request := v1.PostCommonServiceItemRequest{
@@ -140,7 +143,9 @@ func TestRoutingOp(t *testing.T) {
 			},
 			SourceID:      testSourceID,
 			TargetGroupID: testTargetGroupID,
-			PriorityRank:  6,
+			// Although it is necessary to set PriorityRank,
+			// PriorityRank can't be updated, so not set here (if want to update, use Reorder API)
+			PriorityRank: 1,
 		}
 		request := v1.PutCommonServiceItemRequest{
 			CommonServiceItem: v1.PutCommonServiceItemRequestCommonServiceItem{
