@@ -552,6 +552,15 @@ func (s *OptPutCommonServiceItemRequestCommonServiceItemSettings) SetFake() {
 }
 
 // SetFake set fake values.
+func (s *OptPutCommonServiceItemRoutingReorderRequest) SetFake() {
+	var elem PutCommonServiceItemRoutingReorderRequest
+	{
+		elem.SetFake()
+	}
+	s.SetTo(elem)
+}
+
+// SetFake set fake values.
 func (s *OptSendNotificationMessageRequest) SetFake() {
 	var elem SendNotificationMessageRequest
 	{
