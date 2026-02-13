@@ -286,6 +286,17 @@ func TestRoutingOp(t *testing.T) {
 		require.Equal(t, firstPriorityRank, firstRouting.Settings.CommonServiceItemRoutingSettings.PriorityRank, "first routing's priority rank should be updated")
 		require.Equal(t, secondPriorityRank, secondRouting.Settings.CommonServiceItemRoutingSettings.PriorityRank, "second routing's priority rank should be updated")
 	})
+	t.Run("ListSource", func(t *testing.T) {
+		resp, err := routingAPI.ListSource(ctx)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		if resp == nil {
+			t.Fatal("expected response but got nil")
+		}
+		t.Logf("RoutingOp.ListSource response: %+v", resp)
+	})
+
 	t.Run("Delete", func(t *testing.T) {
 		err := routingAPI.Delete(ctx, id)
 		if err != nil {
