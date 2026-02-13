@@ -1329,6 +1329,52 @@ func (o OptPutCommonServiceItemRequestCommonServiceItemSettings) Or(d PutCommonS
 	return d
 }
 
+// NewOptPutCommonServiceItemRoutingReorderRequest returns new OptPutCommonServiceItemRoutingReorderRequest with value set to v.
+func NewOptPutCommonServiceItemRoutingReorderRequest(v PutCommonServiceItemRoutingReorderRequest) OptPutCommonServiceItemRoutingReorderRequest {
+	return OptPutCommonServiceItemRoutingReorderRequest{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPutCommonServiceItemRoutingReorderRequest is optional PutCommonServiceItemRoutingReorderRequest.
+type OptPutCommonServiceItemRoutingReorderRequest struct {
+	Value PutCommonServiceItemRoutingReorderRequest
+	Set   bool
+}
+
+// IsSet returns true if OptPutCommonServiceItemRoutingReorderRequest was set.
+func (o OptPutCommonServiceItemRoutingReorderRequest) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPutCommonServiceItemRoutingReorderRequest) Reset() {
+	var v PutCommonServiceItemRoutingReorderRequest
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPutCommonServiceItemRoutingReorderRequest) SetTo(v PutCommonServiceItemRoutingReorderRequest) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPutCommonServiceItemRoutingReorderRequest) Get() (v PutCommonServiceItemRoutingReorderRequest, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPutCommonServiceItemRoutingReorderRequest) Or(d PutCommonServiceItemRoutingReorderRequest) PutCommonServiceItemRoutingReorderRequest {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptSendNotificationMessageRequest returns new OptSendNotificationMessageRequest with value set to v.
 func NewOptSendNotificationMessageRequest(v SendNotificationMessageRequest) OptSendNotificationMessageRequest {
 	return OptSendNotificationMessageRequest{

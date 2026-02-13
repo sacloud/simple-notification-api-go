@@ -81,7 +81,7 @@ type Invoker interface {
 	// `PriorityRank`の値は他の通知ルーティングと重複しないように指定する必要があります。.
 	//
 	// PUT /commonserviceitem/simplenotification/routing/reorder
-	ReorderRouting(ctx context.Context, request *PutCommonServiceItemRoutingReorderRequest) (*ReorderRoutingAccepted, error)
+	ReorderRouting(ctx context.Context, request OptPutCommonServiceItemRoutingReorderRequest) (*ReorderRoutingAccepted, error)
 	// SendNotificationMessage invokes sendNotificationMessage operation.
 	//
 	// 指定した通知先グループに対してメッセージを送信します。.
@@ -529,16 +529,23 @@ func (c *Client) sendListSources(ctx context.Context) (res *ListSourcesResponse,
 // `PriorityRank`の値は他の通知ルーティングと重複しないように指定する必要があります。.
 //
 // PUT /commonserviceitem/simplenotification/routing/reorder
-func (c *Client) ReorderRouting(ctx context.Context, request *PutCommonServiceItemRoutingReorderRequest) (*ReorderRoutingAccepted, error) {
+func (c *Client) ReorderRouting(ctx context.Context, request OptPutCommonServiceItemRoutingReorderRequest) (*ReorderRoutingAccepted, error) {
 	res, err := c.sendReorderRouting(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendReorderRouting(ctx context.Context, request *PutCommonServiceItemRoutingReorderRequest) (res *ReorderRoutingAccepted, err error) {
+func (c *Client) sendReorderRouting(ctx context.Context, request OptPutCommonServiceItemRoutingReorderRequest) (res *ReorderRoutingAccepted, err error) {
 	// Validate request before sending.
 	if err := func() error {
-		if err := request.Validate(); err != nil {
-			return err
+		if value, ok := request.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
 		}
 		return nil
 	}(); err != nil {
