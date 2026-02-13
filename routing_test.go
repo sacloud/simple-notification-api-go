@@ -45,15 +45,15 @@ func routingAPISetup(t *testing.T) (ctx context.Context, api simplenotification.
 
 func TestRoutingOp(t *testing.T) {
 	ctx, routingAPI := routingAPISetup(t)
-	testutil.PreCheckEnvsFunc("ROUTING_TEST_LABEL", "ROUTING_TEST_LABELVAL", "ROUTING_TEST_SOURCEID", "ROUTING_TEST_TARGETGROUPID")(t)
+	testutil.PreCheckEnvsFunc("SAKURA_ROUTING_TEST_LABEL", "SAKURA_ROUTING_TEST_LABELVAL", "SAKURA_ROUTING_TEST_SOURCEID", "SAKURA_ROUTING_TEST_TARGETGROUPID")(t)
 	id := "" // set created routing ID
 	routingName := "test-routing-1"
 	description := "test-routing-description"
 	tags := []string{"test"}
-	testLabel := os.Getenv("ROUTING_TEST_LABEL")
-	testLabelValue := os.Getenv("ROUTING_TEST_LABELVAL")
-	testSourceID := os.Getenv("ROUTING_TEST_SOURCEID")
-	testTargetGroupID := os.Getenv("ROUTING_TEST_TARGETGROUPID")
+	testLabel := os.Getenv("SAKURA_ROUTING_TEST_LABEL")
+	testLabelValue := os.Getenv("SAKURA_ROUTING_TEST_LABELVAL")
+	testSourceID := os.Getenv("SAKURA_ROUTING_TEST_SOURCEID")
+	testTargetGroupID := os.Getenv("SAKURA_ROUTING_TEST_TARGETGROUPID")
 	setting := v1.CommonServiceItemRoutingSettings{
 		MatchLabels: []v1.CommonServiceItemRoutingSettingsMatchLabelsItem{
 			{Name: testLabel, Value: testLabelValue},
