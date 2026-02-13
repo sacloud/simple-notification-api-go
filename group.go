@@ -23,11 +23,9 @@ import (
 
 type GroupAPI interface {
 	List(ctx context.Context) (*v1.ListCommonServiceItemsResponse, error)
-	Create(ctx context.Context, groupname, description string, tags []string,
-		setting v1.CommonServiceItemGroupSettings) (*v1.CommonServiceItem, error)
-	Read(ctx context.Context, id string) (*v1.CommonServiceItem, error)
-	Update(ctx context.Context, id, groupname, description string, tags []string,
-		optSetting *v1.CommonServiceItemGroupSettings) (*v1.CommonServiceItem, error)
+	Create(ctx context.Context, request v1.PostCommonServiceItemRequest) (*v1.CreateCommonServiceItemCreated, error)
+	Read(ctx context.Context, id string) (*v1.GetCommonServiceItemOK, error)
+	Update(ctx context.Context, id string, request v1.PutCommonServiceItemRequest) (*v1.UpdateCommonServiceItemOK, error)
 	Delete(ctx context.Context, id string) error
 	SendMessage(ctx context.Context, id string,
 		request v1.SendNotificationMessageRequest) (*v1.SendNotificationMessageResponse, error)
@@ -58,29 +56,14 @@ func (o *GroupOp) List(ctx context.Context) (*v1.ListCommonServiceItemsResponse,
 	return res, nil
 }
 
-func (o *GroupOp) Create(ctx context.Context, groupname, description string, tags []string,
-	setting v1.CommonServiceItemGroupSettings) (*v1.CommonServiceItem, error) {
+func (o *GroupOp) Create(ctx context.Context, request v1.PostCommonServiceItemRequest) (*v1.CreateCommonServiceItemCreated, error) {
 	const methodName = "Group.Create"
-	req := v1.PostCommonServiceItemRequest{
-		CommonServiceItem: v1.PostCommonServiceItemRequestCommonServiceItem{
-			Name:        groupname,
-			Description: description,
-			Tags:        tags,
-			ServiceClass: v1.OptString{
-				Value: "cloud/saknoticegroup/2",
-				Set:   true,
-			},
-			Provider: v1.PostCommonServiceItemRequestCommonServiceItemProvider{
-				Class:        v1.PostCommonServiceItemRequestCommonServiceItemProviderClassSaknoticegroup,
-				ServiceClass: v1.OptString{Value: "cloud/saknotice", Set: true},
-			},
-			Settings: v1.PostCommonServiceItemRequestCommonServiceItemSettings{
-				Type:                           v1.CommonServiceItemGroupSettingsPostCommonServiceItemRequestCommonServiceItemSettings,
-				CommonServiceItemGroupSettings: setting,
-			},
-		},
-	}
-	res, err := o.client.CreateCommonServiceItem(ctx, v1.OptPostCommonServiceItemRequest{Value: req, Set: true})
+	request.CommonServiceItem.ServiceClass = v1.OptString{Value: "cloud/saknoticegroup/2", Set: true}
+	request.CommonServiceItem.Provider.Class = v1.PostCommonServiceItemRequestCommonServiceItemProviderClassSaknoticegroup
+	request.CommonServiceItem.Provider.ServiceClass = v1.OptString{Value: "cloud/saknotice", Set: true}
+	request.CommonServiceItem.Settings.Type = v1.CommonServiceItemGroupSettingsPostCommonServiceItemRequestCommonServiceItemSettings
+
+	res, err := o.client.CreateCommonServiceItem(ctx, v1.OptPostCommonServiceItemRequest{Value: request, Set: true})
 	if err != nil {
 		var e *v1.ErrorStatusCode
 		if errors.As(err, &e) {
@@ -88,10 +71,10 @@ func (o *GroupOp) Create(ctx context.Context, groupname, description string, tag
 		}
 		return nil, NewError(methodName, err)
 	}
-	return &res.CommonServiceItem, nil
+	return res, nil
 }
 
-func (o *GroupOp) Read(ctx context.Context, id string) (*v1.CommonServiceItem, error) {
+func (o *GroupOp) Read(ctx context.Context, id string) (*v1.GetCommonServiceItemOK, error) {
 	const methodName = "Group.Read"
 	res, err := o.client.GetCommonServiceItem(ctx, v1.GetCommonServiceItemParams{ID: id})
 	if err != nil {
@@ -101,34 +84,13 @@ func (o *GroupOp) Read(ctx context.Context, id string) (*v1.CommonServiceItem, e
 		}
 		return nil, NewError(methodName, err)
 	}
-	return &res.CommonServiceItem, nil
+	return res, nil
 }
 
-func (o *GroupOp) Update(ctx context.Context, id, groupname, description string, tags []string,
-	optSetting *v1.CommonServiceItemGroupSettings) (*v1.CommonServiceItem, error) {
+func (o *GroupOp) Update(ctx context.Context, id string, request v1.PutCommonServiceItemRequest) (*v1.UpdateCommonServiceItemOK, error) {
 	const methodName = "Group.Update"
-	setting := v1.CommonServiceItemGroupSettings{}
-	set := false
-
-	if optSetting != nil {
-		setting = *optSetting
-		set = true
-	}
-	req := v1.PutCommonServiceItemRequest{
-		CommonServiceItem: v1.PutCommonServiceItemRequestCommonServiceItem{
-			Name:        groupname,
-			Description: description,
-			Tags:        tags,
-			Settings: v1.OptPutCommonServiceItemRequestCommonServiceItemSettings{
-				Set: set,
-				Value: v1.PutCommonServiceItemRequestCommonServiceItemSettings{
-					Type:                           v1.CommonServiceItemGroupSettingsPutCommonServiceItemRequestCommonServiceItemSettings,
-					CommonServiceItemGroupSettings: setting,
-				},
-			},
-		},
-	}
-	res, err := o.client.UpdateCommonServiceItem(ctx, v1.OptPutCommonServiceItemRequest{Value: req, Set: true}, v1.UpdateCommonServiceItemParams{ID: id})
+	request.CommonServiceItem.Settings.Value.Type = v1.CommonServiceItemGroupSettingsPutCommonServiceItemRequestCommonServiceItemSettings
+	res, err := o.client.UpdateCommonServiceItem(ctx, v1.OptPutCommonServiceItemRequest{Value: request, Set: true}, v1.UpdateCommonServiceItemParams{ID: id})
 	if err != nil {
 		var e *v1.ErrorStatusCode
 		if errors.As(err, &e) {
@@ -136,7 +98,7 @@ func (o *GroupOp) Update(ctx context.Context, id, groupname, description string,
 		}
 		return nil, NewError(methodName, err)
 	}
-	return &res.CommonServiceItem, nil
+	return res, nil
 }
 
 func (o *GroupOp) Delete(ctx context.Context, id string) error {
