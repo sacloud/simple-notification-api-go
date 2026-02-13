@@ -28,7 +28,7 @@ type RoutingAPI interface {
 	Update(ctx context.Context, id string, request v1.PutCommonServiceItemRequest) (*v1.UpdateCommonServiceItemOK, error)
 	Delete(ctx context.Context, id string) error
 	Reorder(ctx context.Context, request v1.PutCommonServiceItemRoutingReorderRequest) (*v1.ReorderRoutingAccepted, error)
-	ListSource(ctx context.Context, id string) (*v1.ListSourcesResponse, error)
+	ListSource(ctx context.Context) (*v1.ListSourcesResponse, error)
 }
 
 var _ RoutingAPI = (*RoutingOp)(nil)
@@ -128,7 +128,7 @@ func (o *RoutingOp) Reorder(ctx context.Context, request v1.PutCommonServiceItem
 	return resp, nil
 }
 
-func (o *RoutingOp) ListSource(ctx context.Context, id string) (*v1.ListSourcesResponse, error) {
+func (o *RoutingOp) ListSource(ctx context.Context) (*v1.ListSourcesResponse, error) {
 	const methodName = "Routing.ListSource"
 
 	res, err := o.client.ListSources(ctx)

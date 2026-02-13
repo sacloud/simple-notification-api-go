@@ -287,7 +287,7 @@ func TestRoutingOp(t *testing.T) {
 		require.Equal(t, secondPriorityRank, secondRouting.Settings.CommonServiceItemRoutingSettings.PriorityRank, "second routing's priority rank should be updated")
 	})
 	t.Run("ListSource", func(t *testing.T) {
-		resp, err := routingAPI.ListSource(ctx, testSourceID)
+		resp, err := routingAPI.ListSource(ctx)
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
