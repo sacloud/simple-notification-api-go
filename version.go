@@ -16,4 +16,4 @@
 // Please migrate to that module. This repository will be archived.
 package simplenotification
 
-const Version = "0.3.1"
+const Version = "0.3.2"

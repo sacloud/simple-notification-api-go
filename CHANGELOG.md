@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.3.2](https://github.com/sacloud/simple-notification-api-go/compare/v0.3.1...v0.3.2) - 2026-08-03
+- chore: erase dup logs by @to-shoji in https://github.com/sacloud/simple-notification-api-go/pull/58
+- update README for repository transition by @shyouhei in https://github.com/sacloud/simple-notification-api-go/pull/68
+
 ## [v0.3.1](https://github.com/sacloud/simple-notification-api-go/compare/v0.3.0...v0.3.1) - 2026-04-23
 - 通知履歴テストの修正 by @to-shoji in https://github.com/sacloud/simple-notification-api-go/pull/45
 - NewClientの引数見直しおよびvulncheck対応 by @to-shoji in https://github.com/sacloud/simple-notification-api-go/pull/56
